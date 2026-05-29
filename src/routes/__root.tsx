@@ -20,7 +20,11 @@ export const Route = createRootRoute({
         content: 'width=device-width, initial-scale=1',
       },
       {
-        title: 'TanStack Chat Starter',
+        title: 'فرشات الوليد - معمل إنشاء فرشات احترافية',
+      },
+      {
+        name: 'description',
+        content: 'فرشات الوليد - معمل إنشاء فرشات نوم عالية الجودة مع أحدث التقنيات والمواد الطبية الصحية',
       },
     ],
     links: [
@@ -34,7 +38,6 @@ export const Route = createRootRoute({
   component: () => (
     <RootDocument>
       <Outlet />
-      <TanStackRouterDevtools />
     </RootDocument>
   ),
 })
