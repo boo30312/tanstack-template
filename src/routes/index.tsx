@@ -1,171 +1,148 @@
-import { createFileRoute } from '@tanstack/react-router'
-import { useState } from 'react'
-import { MessageCircle, Phone, MapPin, Award, Heart, Leaf, Truck, Shield } from 'lucide-react'
+import { createFileRoute, useNavigate } from '@tanstack/react-router'
+import { useAuth } from '../context/AuthContext'
+import { BarChart3, TrendingUp, Users, BookOpen, Zap } from 'lucide-react'
 
 function Home() {
-  const [isMenuOpen, setIsMenuOpen] = useState(false)
-
-  const scrollToSection = (id: string) => {
-    const element = document.getElementById(id)
-    element?.scrollIntoView({ behavior: 'smooth' })
-    setIsMenuOpen(false)
-  }
+  const navigate = useNavigate()
+  const { user } = useAuth()
 
   return (
-    <div className="w-full bg-black text-white" dir="rtl">
+    <div className="w-full bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 text-white" dir="rtl">
       {/* Navigation */}
-      <nav className="fixed top-0 w-full z-50 bg-black border-b border-yellow-600">
+      <nav className="fixed top-0 w-full z-50 bg-slate-800 border-b border-amber-600/20 backdrop-blur">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
           <div className="flex justify-between items-center">
-            <div className="text-2xl font-bold text-yellow-500">فرشات الوليد</div>
-            <div className="hidden md:flex gap-8">
-              {['hero', 'features', 'products', 'contact'].map((section) => (
+            <div className="text-2xl font-bold text-amber-500">ENTER POINT</div>
+            <div className="flex gap-4">
+              {user && (
                 <button
-                  key={section}
-                  onClick={() => scrollToSection(section)}
-                  className="text-gray-300 hover:text-yellow-500 transition capitalize"
+                  onClick={() => navigate({ to: '/dashboard' })}
+                  className="bg-amber-600 hover:bg-amber-700 text-white px-6 py-2 rounded-lg transition font-medium"
                 >
-                  {section === 'hero' && 'الرئيسية'}
-                  {section === 'features' && 'المميزات'}
-                  {section === 'products' && 'المنتجات'}
-                  {section === 'contact' && 'التواصل'}
+                  لوحة التحكم
                 </button>
-              ))}
+              )}
+              {!user && (
+                <button
+                  onClick={() => navigate({ to: '/login' })}
+                  className="bg-amber-600 hover:bg-amber-700 text-white px-6 py-2 rounded-lg transition font-medium"
+                >
+                  دخول
+                </button>
+              )}
             </div>
-            <button
-              onClick={() => setIsMenuOpen(!isMenuOpen)}
-              className="md:hidden text-yellow-500"
-            >
-              ☰
-            </button>
           </div>
-          {isMenuOpen && (
-            <div className="md:hidden mt-4 space-y-2">
-              {['hero', 'features', 'products', 'contact'].map((section) => (
-                <button
-                  key={section}
-                  onClick={() => scrollToSection(section)}
-                  className="block w-full text-right text-gray-300 hover:text-yellow-500 py-2"
-                >
-                  {section === 'hero' && 'الرئيسية'}
-                  {section === 'features' && 'المميزات'}
-                  {section === 'products' && 'المنتجات'}
-                  {section === 'contact' && 'التواصل'}
-                </button>
-              ))}
-            </div>
-          )}
         </div>
       </nav>
 
       {/* Hero Section */}
-      <section
-        id="hero"
-        className="pt-32 pb-20 px-4 bg-gradient-to-b from-gray-900 via-black to-black"
-      >
+      <section className="pt-32 pb-20 px-4">
         <div className="max-w-7xl mx-auto">
           <div className="grid md:grid-cols-2 gap-12 items-center">
             <div className="space-y-6">
-              <h1 className="text-5xl md:text-6xl font-bold text-yellow-500 leading-tight">
-                راحة تدوم... جودة تليق بك
+              <h1 className="text-5xl md:text-6xl font-bold text-amber-400 leading-tight">
+                تعلم التداول بأحترافية
               </h1>
               <p className="text-xl text-gray-300 leading-relaxed">
-                معمل إنشاء فرشات متخصص بتصنيع فرشات نوم عالية الجودة مع أحدث التقنيات والمواد الطبية الصحية
+                منصة تدريب عملية شاملة تجمع بين التعليم النظري والخبرة العملية لسوق التداول والعملات
               </p>
               <div className="flex gap-4 pt-4">
-                <a
-                  href="https://wa.me/963967886527"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="bg-green-500 hover:bg-green-600 text-white px-8 py-3 rounded-lg flex items-center gap-2 transition"
-                >
-                  <MessageCircle size={20} />
-                  تواصل عبر واتس
-                </a>
-                <button
-                  onClick={() => scrollToSection('contact')}
-                  className="border-2 border-yellow-500 text-yellow-500 hover:bg-yellow-500 hover:text-black px-8 py-3 rounded-lg transition"
-                >
-                  اطلب الآن
-                </button>
+                {user ? (
+                  <button
+                    onClick={() => navigate({ to: '/dashboard' })}
+                    className="bg-amber-600 hover:bg-amber-700 text-white px-8 py-3 rounded-lg flex items-center gap-2 transition font-medium"
+                  >
+                    <Zap size={20} />
+                    اذهب للوحة التحكم
+                  </button>
+                ) : (
+                  <button
+                    onClick={() => navigate({ to: '/login' })}
+                    className="bg-amber-600 hover:bg-amber-700 text-white px-8 py-3 rounded-lg flex items-center gap-2 transition font-medium"
+                  >
+                    <Zap size={20} />
+                    ابدأ الآن
+                  </button>
+                )}
               </div>
             </div>
             <div className="hidden md:block">
-              <div className="w-80 h-80 mx-auto bg-gradient-to-br from-yellow-600 to-yellow-800 rounded-full opacity-20 blur-3xl"></div>
-              <div className="text-center text-yellow-500 text-6xl">🛏️</div>
+              <div className="w-80 h-80 mx-auto bg-gradient-to-br from-amber-600 to-amber-800 rounded-full opacity-20 blur-3xl"></div>
+              <div className="text-center text-amber-400 text-6xl">📈</div>
             </div>
           </div>
         </div>
       </section>
 
       {/* Features Section */}
-      <section id="features" className="py-20 px-4 bg-black">
+      <section className="py-20 px-4 bg-slate-800/50">
         <div className="max-w-7xl mx-auto">
-          <h2 className="text-4xl font-bold text-center text-yellow-500 mb-16">مميزاتنا</h2>
+          <h2 className="text-4xl font-bold text-center text-amber-400 mb-16">المميزات الرئيسية</h2>
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
             {[
-              { icon: Heart, title: 'راحة تدوم', desc: 'تقنيات حديثة لراحة قصوى' },
-              { icon: Award, title: 'جودة عالية', desc: 'شهادات وتصاريح دولية' },
-              { icon: Leaf, title: 'مواد صحية', desc: 'مواد طبيعية آمنة 100%' },
-              { icon: Shield, title: 'دعم مالي', desc: 'خطط دفع مرنة وآمنة' },
-            ].map((feature, idx) => (
-              <div
-                key={idx}
-                className="bg-gray-900 border border-yellow-600 p-8 rounded-lg hover:border-yellow-500 transition text-center"
-              >
-                <div className="text-yellow-500 mb-4 flex justify-center">
-                  <feature.icon size={40} />
+              { icon: BookOpen, title: 'محتوى تعليمي', desc: 'دورات شاملة من المبتدئ للمحترف' },
+              { icon: Users, title: 'مجتمع تداول', desc: 'تفاعل مع متداولين ومحترفين' },
+              { icon: TrendingUp, title: 'تحليل حي', desc: 'بيانات سوق مباشرة وتحليلات' },
+              { icon: BarChart3, title: 'لوحة تحكم', desc: 'إدارة متقدمة للعمليات والتحليلات' },
+            ].map((feature, idx) => {
+              const Icon = feature.icon
+              return (
+                <div
+                  key={idx}
+                  className="bg-slate-700/50 border border-amber-600/30 p-8 rounded-lg hover:border-amber-600 transition text-center"
+                >
+                  <div className="text-amber-400 mb-4 flex justify-center">
+                    <Icon size={40} />
+                  </div>
+                  <h3 className="text-xl font-bold text-amber-400 mb-3">{feature.title}</h3>
+                  <p className="text-gray-400">{feature.desc}</p>
                 </div>
-                <h3 className="text-xl font-bold text-yellow-500 mb-3">{feature.title}</h3>
-                <p className="text-gray-400">{feature.desc}</p>
-              </div>
-            ))}
+              )
+            })}
           </div>
         </div>
       </section>
 
       {/* Products Section */}
-      <section id="products" className="py-20 px-4 bg-gradient-to-b from-black to-gray-900">
+      <section className="py-20 px-4">
         <div className="max-w-7xl mx-auto">
-          <h2 className="text-4xl font-bold text-center text-yellow-500 mb-16">منتجاتنا</h2>
+          <h2 className="text-4xl font-bold text-center text-amber-400 mb-16">خطط التدريب</h2>
           <div className="grid md:grid-cols-3 gap-10">
             {[
               {
-                name: 'فرشة الوليد برو',
-                desc: 'فرشة متقدمة مع حشوة احترافية وتقنيات حديثة',
-                features: ['تقنيات حديثة', 'ثبات وجودة', 'راحة فائقة']
+                name: 'الخطة الأساسية',
+                desc: 'للمبتدئين - تعليم المبادئ الأساسية',
+                features: ['10 دورات تعليمية', 'دعم الأساسيات', 'منتدى تفاعلي']
               },
               {
-                name: 'فرشة الوليد ديلوكس',
-                desc: 'فرشة فاخرة بتصميم عصري مع مواد عالية الجودة',
-                features: ['مواد طبية', 'دعم صحي للجسم', 'عمر طويل']
+                name: 'الخطة المتقدمة',
+                desc: 'للمتداولين - استراتيجيات متقدمة',
+                features: ['50 دورة متقدمة', 'تحليل فني عميق', 'جلسات حية أسبوعية']
               },
               {
-                name: 'فرشة الوليد كلاسيك',
-                desc: 'فرشة كلاسيكية موثوقة بأسعار ممتازة',
-                features: ['سعر مناسب', 'جودة ثابتة', 'متينة']
+                name: 'الخطة الاحترافية',
+                desc: 'للمحترفين - إدارة محفظة متكاملة',
+                features: ['كل المحتوى', 'استشارات فردية', 'إدارة رأس المال']
               },
             ].map((product, idx) => (
-              <div key={idx} className="bg-gray-900 rounded-lg border border-yellow-600 overflow-hidden hover:border-yellow-500 transition">
-                <div className="h-48 bg-gradient-to-b from-yellow-600 to-yellow-800 flex items-center justify-center">
-                  <div className="text-6xl">🛏️</div>
+              <div key={idx} className="bg-slate-700/50 rounded-lg border border-amber-600/30 overflow-hidden hover:border-amber-600 transition">
+                <div className="h-48 bg-gradient-to-b from-amber-600 to-amber-800 flex items-center justify-center">
+                  <div className="text-6xl">📚</div>
                 </div>
                 <div className="p-6">
-                  <h3 className="text-2xl font-bold text-yellow-500 mb-2">{product.name}</h3>
+                  <h3 className="text-2xl font-bold text-amber-400 mb-2">{product.name}</h3>
                   <p className="text-gray-300 mb-4">{product.desc}</p>
                   <ul className="space-y-2 mb-6">
                     {product.features.map((feature, i) => (
                       <li key={i} className="text-sm text-gray-400">✓ {feature}</li>
                     ))}
                   </ul>
-                  <a
-                    href="https://wa.me/963967886527"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="block w-full bg-yellow-600 hover:bg-yellow-700 text-black font-bold py-2 rounded transition text-center"
+                  <button
+                    onClick={() => navigate({ to: '/login' })}
+                    className="block w-full bg-amber-600 hover:bg-amber-700 text-white font-bold py-2 rounded transition text-center"
                   >
-                    استفسر الآن
-                  </a>
+                    اختر الخطة
+                  </button>
                 </div>
               </div>
             ))}
@@ -174,88 +151,83 @@ function Home() {
       </section>
 
       {/* Trust Badges */}
-      <section className="py-16 px-4 bg-gray-900">
+      <section className="py-16 px-4 bg-slate-800/50">
         <div className="max-w-7xl mx-auto">
           <div className="grid md:grid-cols-4 gap-8 text-center">
             {[
-              { icon: Award, label: 'جودة عالية', value: '10 سنوات' },
-              { icon: Truck, label: 'توصيل سريع', value: 'سوريا - لبنان - الأردن' },
-              { icon: Shield, label: 'ضمان حقيقي', value: 'كفالة كاملة' },
-              { icon: Heart, label: 'رضا العملاء', value: '100% مضمون' },
-            ].map((badge, idx) => (
-              <div key={idx} className="border border-yellow-600 p-6 rounded-lg">
-                <div className="text-yellow-500 mb-3 flex justify-center">
-                  <badge.icon size={32} />
+              { icon: BookOpen, label: 'تدريب احترافي', value: '500+ ساعة' },
+              { icon: Users, label: 'متداولون نشطون', value: '+5000 متداول' },
+              { icon: TrendingUp, label: 'معدل النجاح', value: '85% نجاح' },
+              { icon: BarChart3, label: 'إحصائيات حقيقية', value: 'بيانات مباشرة' },
+            ].map((badge, idx) => {
+              const Icon = badge.icon
+              return (
+                <div key={idx} className="border border-amber-600/30 p-6 rounded-lg hover:border-amber-600 transition">
+                  <div className="text-amber-400 mb-3 flex justify-center">
+                    <Icon size={32} />
+                  </div>
+                  <p className="text-gray-300 mb-2">{badge.label}</p>
+                  <p className="text-xl font-bold text-amber-400">{badge.value}</p>
                 </div>
-                <p className="text-gray-300 mb-2">{badge.label}</p>
-                <p className="text-xl font-bold text-yellow-500">{badge.value}</p>
-              </div>
-            ))}
+              )
+            })}
           </div>
         </div>
       </section>
 
       {/* Contact Section */}
-      <section id="contact" className="py-20 px-4 bg-black">
+      <section className="py-20 px-4">
         <div className="max-w-4xl mx-auto">
-          <h2 className="text-4xl font-bold text-center text-yellow-500 mb-12">تواصل معنا</h2>
-          <div className="bg-gray-900 border-2 border-yellow-600 rounded-lg p-8 md:p-12">
+          <h2 className="text-4xl font-bold text-center text-amber-400 mb-12">ابدأ رحلتك التدريبية</h2>
+          <div className="bg-slate-800 border-2 border-amber-600/30 rounded-lg p-8 md:p-12">
             <div className="space-y-8">
               <div className="flex items-start gap-4">
-                <Phone className="text-yellow-500 flex-shrink-0" size={28} />
+                <Zap className="text-amber-400 flex-shrink-0" size={28} />
                 <div>
-                  <h3 className="text-xl font-bold text-yellow-500 mb-2">واتساب مباشر</h3>
-                  <a
-                    href="https://wa.me/963967886527"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-gray-300 hover:text-yellow-500 text-lg transition"
-                  >
-                    +963 967 886 527
-                  </a>
-                </div>
-              </div>
-
-              <div className="flex items-start gap-4">
-                <MapPin className="text-yellow-500 flex-shrink-0" size={28} />
-                <div>
-                  <h3 className="text-xl font-bold text-yellow-500 mb-2">موقعنا</h3>
+                  <h3 className="text-xl font-bold text-amber-400 mb-2">ابدأ الآن</h3>
                   <p className="text-gray-300">
-                    سوريا • دمشق • ريف دمشق<br/>
-                    بجانب المزارعة الشرقية البشرطة
+                    انضم إلى أكاديمية التدريب والبدء الفوري في مسار التعلم الاحترافي
                   </p>
                 </div>
               </div>
 
-              <div className="pt-8 border-t border-yellow-600">
-                <h3 className="text-xl font-bold text-yellow-500 mb-6">ماذا نقدم لك؟</h3>
+              <div className="flex items-start gap-4">
+                <Users className="text-amber-400 flex-shrink-0" size={28} />
+                <div>
+                  <h3 className="text-xl font-bold text-amber-400 mb-2">مجتمعنا</h3>
+                  <p className="text-gray-300">
+                    تفاعل مع متداولين محترفين وتبادل الخبرات والاستراتيجيات المختلفة
+                  </p>
+                </div>
+              </div>
+
+              <div className="pt-8 border-t border-amber-600/30">
+                <h3 className="text-xl font-bold text-amber-400 mb-6">ما يميزنا؟</h3>
                 <ul className="space-y-3 text-gray-300">
-                  <li>✓ تصميم حسب الطلب</li>
-                  <li>✓ خدمة عملاء متميزة</li>
-                  <li>✓ توصيل وتركيب مجاني</li>
-                  <li>✓ ضمان ما بعد البيع</li>
-                  <li>✓ دعم مالي ميسر</li>
+                  <li>✓ محتوى تعليمي احترافي</li>
+                  <li>✓ دعم متقدم وفعال</li>
+                  <li>✓ تحليل سوق مباشر</li>
+                  <li>✓ شهادات معترف بها</li>
+                  <li>✓ جلسات استشارية فردية</li>
                 </ul>
               </div>
 
-              <a
-                href="https://wa.me/963967886527"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="block w-full bg-green-500 hover:bg-green-600 text-white font-bold py-4 rounded-lg text-center transition text-lg"
+              <button
+                onClick={() => navigate({ to: '/login' })}
+                className="block w-full bg-amber-600 hover:bg-amber-700 text-white font-bold py-4 rounded-lg text-center transition text-lg"
               >
-                اضغط للتواصل مباشرة عبر واتس
-              </a>
+                ادخل الآن لوحة التحكم
+              </button>
             </div>
           </div>
         </div>
       </section>
 
       {/* Footer */}
-      <footer className="bg-gray-900 border-t border-yellow-600 py-8 px-4">
+      <footer className="bg-slate-800 border-t border-amber-600/20 py-8 px-4">
         <div className="max-w-7xl mx-auto text-center text-gray-400">
-          <p>© 2026 فرشات الوليد - معمل إنشاء فرشات. جميع الحقوق محفوظة.</p>
-          <p className="mt-2 text-sm">راحة تدوم ... جودة تليق بك</p>
+          <p>© 2026 ENTER POINT - نظام لوحة التحكم. جميع الحقوق محفوظة.</p>
+          <p className="mt-2 text-sm">تعلم التداول بأحترافية وثقة</p>
         </div>
       </footer>
     </div>
