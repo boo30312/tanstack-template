@@ -3,9 +3,12 @@ import {
   Outlet,
   HeadContent,
   Scripts,
+  useLocation,
+  useNavigate,
 } from '@tanstack/react-router'
-import { TanStackRouterDevtools } from '@tanstack/router-devtools'
+import React from 'react'
 import { ConvexClientProvider } from '../convex'
+import { AuthProvider, useAuth } from '../context/AuthContext'
 
 import appCss from '../styles.css?url'
 
@@ -20,7 +23,11 @@ export const Route = createRootRoute({
         content: 'width=device-width, initial-scale=1',
       },
       {
-        title: 'TanStack Chat Starter',
+        title: 'ENTER POINT - نظام لوحة التحكم',
+      },
+      {
+        name: 'description',
+        content: 'ENTER POINT Trading Academy - نظام إدارة الأكاديمية المتقدم',
       },
     ],
     links: [
@@ -34,7 +41,6 @@ export const Route = createRootRoute({
   component: () => (
     <RootDocument>
       <Outlet />
-      <TanStackRouterDevtools />
     </RootDocument>
   ),
 })
@@ -47,10 +53,28 @@ function RootDocument({ children }: { children: React.ReactNode }) {
       </head>
       <body>
         <ConvexClientProvider>
-          {children}
+          <AuthProvider>
+            <AuthRedirect>
+              {children}
+            </AuthRedirect>
+          </AuthProvider>
         </ConvexClientProvider>
         <Scripts />
       </body>
     </html>
   )
+}
+
+function AuthRedirect({ children }: { children: React.ReactNode }) {
+  const { user } = useAuth()
+  const location = useLocation()
+  const navigate = useNavigate()
+
+  React.useEffect(() => {
+    if (!user && !location.pathname.startsWith('/login') && location.pathname !== '/') {
+      navigate({ to: '/login', replace: true })
+    }
+  }, [user, location.pathname, navigate])
+
+  return <>{children}</>
 }

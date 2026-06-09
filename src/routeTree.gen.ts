@@ -11,14 +11,62 @@
 // Import Routes
 
 import { Route as rootRoute } from './routes/__root'
+import { Route as LoginImport } from './routes/login'
+import { Route as DashboardImport } from './routes/dashboard'
 import { Route as IndexImport } from './routes/index'
+import { Route as DashboardSocialImport } from './routes/dashboard/social'
+import { Route as DashboardEmployeesImport } from './routes/dashboard/employees'
+import { Route as DashboardContentImport } from './routes/dashboard/content'
+import { Route as DashboardApiImport } from './routes/dashboard/api'
+import { Route as DashboardlayoutImport } from './routes/dashboard/__layout'
 
 // Create/Update Routes
+
+const LoginRoute = LoginImport.update({
+  id: '/login',
+  path: '/login',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const DashboardRoute = DashboardImport.update({
+  id: '/dashboard',
+  path: '/dashboard',
+  getParentRoute: () => rootRoute,
+} as any)
 
 const IndexRoute = IndexImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRoute,
+} as any)
+
+const DashboardSocialRoute = DashboardSocialImport.update({
+  id: '/social',
+  path: '/social',
+  getParentRoute: () => DashboardRoute,
+} as any)
+
+const DashboardEmployeesRoute = DashboardEmployeesImport.update({
+  id: '/employees',
+  path: '/employees',
+  getParentRoute: () => DashboardRoute,
+} as any)
+
+const DashboardContentRoute = DashboardContentImport.update({
+  id: '/content',
+  path: '/content',
+  getParentRoute: () => DashboardRoute,
+} as any)
+
+const DashboardApiRoute = DashboardApiImport.update({
+  id: '/api',
+  path: '/api',
+  getParentRoute: () => DashboardRoute,
+} as any)
+
+const DashboardlayoutRoute = DashboardlayoutImport.update({
+  id: '/__layout',
+  getParentRoute: () => DashboardRoute,
 } as any)
 
 // Populate the FileRoutesByPath interface
@@ -32,39 +80,154 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexImport
       parentRoute: typeof rootRoute
     }
+    '/dashboard': {
+      id: '/dashboard'
+      path: '/dashboard'
+      fullPath: '/dashboard'
+      preLoaderRoute: typeof DashboardImport
+      parentRoute: typeof rootRoute
+    }
+    '/login': {
+      id: '/login'
+      path: '/login'
+      fullPath: '/login'
+      preLoaderRoute: typeof LoginImport
+      parentRoute: typeof rootRoute
+    }
+    '/dashboard/__layout': {
+      id: '/dashboard/__layout'
+      path: ''
+      fullPath: '/dashboard'
+      preLoaderRoute: typeof DashboardlayoutImport
+      parentRoute: typeof DashboardImport
+    }
+    '/dashboard/api': {
+      id: '/dashboard/api'
+      path: '/api'
+      fullPath: '/dashboard/api'
+      preLoaderRoute: typeof DashboardApiImport
+      parentRoute: typeof DashboardImport
+    }
+    '/dashboard/content': {
+      id: '/dashboard/content'
+      path: '/content'
+      fullPath: '/dashboard/content'
+      preLoaderRoute: typeof DashboardContentImport
+      parentRoute: typeof DashboardImport
+    }
+    '/dashboard/employees': {
+      id: '/dashboard/employees'
+      path: '/employees'
+      fullPath: '/dashboard/employees'
+      preLoaderRoute: typeof DashboardEmployeesImport
+      parentRoute: typeof DashboardImport
+    }
+    '/dashboard/social': {
+      id: '/dashboard/social'
+      path: '/social'
+      fullPath: '/dashboard/social'
+      preLoaderRoute: typeof DashboardSocialImport
+      parentRoute: typeof DashboardImport
+    }
   }
 }
 
 // Create and export the route tree
 
+interface DashboardRouteChildren {
+  DashboardlayoutRoute: typeof DashboardlayoutRoute
+  DashboardApiRoute: typeof DashboardApiRoute
+  DashboardContentRoute: typeof DashboardContentRoute
+  DashboardEmployeesRoute: typeof DashboardEmployeesRoute
+  DashboardSocialRoute: typeof DashboardSocialRoute
+}
+
+const DashboardRouteChildren: DashboardRouteChildren = {
+  DashboardlayoutRoute: DashboardlayoutRoute,
+  DashboardApiRoute: DashboardApiRoute,
+  DashboardContentRoute: DashboardContentRoute,
+  DashboardEmployeesRoute: DashboardEmployeesRoute,
+  DashboardSocialRoute: DashboardSocialRoute,
+}
+
+const DashboardRouteWithChildren = DashboardRoute._addFileChildren(
+  DashboardRouteChildren,
+)
+
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/dashboard': typeof DashboardlayoutRoute
+  '/login': typeof LoginRoute
+  '/dashboard/api': typeof DashboardApiRoute
+  '/dashboard/content': typeof DashboardContentRoute
+  '/dashboard/employees': typeof DashboardEmployeesRoute
+  '/dashboard/social': typeof DashboardSocialRoute
 }
 
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/dashboard': typeof DashboardlayoutRoute
+  '/login': typeof LoginRoute
+  '/dashboard/api': typeof DashboardApiRoute
+  '/dashboard/content': typeof DashboardContentRoute
+  '/dashboard/employees': typeof DashboardEmployeesRoute
+  '/dashboard/social': typeof DashboardSocialRoute
 }
 
 export interface FileRoutesById {
   __root__: typeof rootRoute
   '/': typeof IndexRoute
+  '/dashboard': typeof DashboardRouteWithChildren
+  '/login': typeof LoginRoute
+  '/dashboard/__layout': typeof DashboardlayoutRoute
+  '/dashboard/api': typeof DashboardApiRoute
+  '/dashboard/content': typeof DashboardContentRoute
+  '/dashboard/employees': typeof DashboardEmployeesRoute
+  '/dashboard/social': typeof DashboardSocialRoute
 }
 
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths:
+    | '/'
+    | '/dashboard'
+    | '/login'
+    | '/dashboard/api'
+    | '/dashboard/content'
+    | '/dashboard/employees'
+    | '/dashboard/social'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to:
+    | '/'
+    | '/dashboard'
+    | '/login'
+    | '/dashboard/api'
+    | '/dashboard/content'
+    | '/dashboard/employees'
+    | '/dashboard/social'
+  id:
+    | '__root__'
+    | '/'
+    | '/dashboard'
+    | '/login'
+    | '/dashboard/__layout'
+    | '/dashboard/api'
+    | '/dashboard/content'
+    | '/dashboard/employees'
+    | '/dashboard/social'
   fileRoutesById: FileRoutesById
 }
 
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  DashboardRoute: typeof DashboardRouteWithChildren
+  LoginRoute: typeof LoginRoute
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  DashboardRoute: DashboardRouteWithChildren,
+  LoginRoute: LoginRoute,
 }
 
 export const routeTree = rootRoute
@@ -77,11 +240,46 @@ export const routeTree = rootRoute
     "__root__": {
       "filePath": "__root.tsx",
       "children": [
-        "/"
+        "/",
+        "/dashboard",
+        "/login"
       ]
     },
     "/": {
       "filePath": "index.tsx"
+    },
+    "/dashboard": {
+      "filePath": "dashboard.tsx",
+      "children": [
+        "/dashboard/__layout",
+        "/dashboard/api",
+        "/dashboard/content",
+        "/dashboard/employees",
+        "/dashboard/social"
+      ]
+    },
+    "/login": {
+      "filePath": "login.tsx"
+    },
+    "/dashboard/__layout": {
+      "filePath": "dashboard/__layout.tsx",
+      "parent": "/dashboard"
+    },
+    "/dashboard/api": {
+      "filePath": "dashboard/api.tsx",
+      "parent": "/dashboard"
+    },
+    "/dashboard/content": {
+      "filePath": "dashboard/content.tsx",
+      "parent": "/dashboard"
+    },
+    "/dashboard/employees": {
+      "filePath": "dashboard/employees.tsx",
+      "parent": "/dashboard"
+    },
+    "/dashboard/social": {
+      "filePath": "dashboard/social.tsx",
+      "parent": "/dashboard"
     }
   }
 }
