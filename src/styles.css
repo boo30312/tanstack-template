@@ -1,13 +1,35 @@
 @import "tailwindcss";
 @import "highlight.js/styles/github-dark.css";
 
+@import url('https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;800;900&display=swap');
+
+:root {
+  /* Dark Luxury Theme Colors */
+  --color-bg-primary: #05070D;
+  --color-bg-secondary: #0B1624;
+  --color-bg-tertiary: #1A2332;
+  --color-gold: #D4AF37;
+  --color-blue: #1F7BFF;
+  --color-text-primary: #F8FAFC;
+  --color-text-muted: #94A3B8;
+  --color-border: #1E293B;
+  --color-success: #10B981;
+  --color-warning: #F59E0B;
+  --color-error: #EF4444;
+  --color-info: #3B82F6;
+}
+
 body {
-  @apply m-0;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
-    "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
-    sans-serif;
+  @apply m-0 bg-[#05070D] text-[#F8FAFC];
+  font-family: 'Tajawal', -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  direction: rtl;
+  overflow-x: hidden;
+}
+
+html {
+  direction: rtl;
 }
 
 code {
