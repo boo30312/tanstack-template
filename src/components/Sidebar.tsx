@@ -1,4 +1,5 @@
 import { PlusCircle, MessageCircle, Trash2, Edit2 } from 'lucide-react';
+import { SocialMediaLinks } from './SocialMediaLinks';
 
 interface SidebarProps {
   conversations: Array<{ id: string; title: string }>;
@@ -100,5 +101,12 @@ export const Sidebar = ({
         </div>
       ))}
     </div>
+
+    {/* Social Media Links */}
+    <SocialMediaLinks
+      website="https://enterpoint.online/"
+      twitter="https://x.com/point_enter"
+      linkedin="https://www.linkedin.com/in/rezaalhajjii/"
+    />
   </div>
 ); 
