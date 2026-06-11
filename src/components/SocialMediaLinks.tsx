@@ -1,32 +1,46 @@
-import { Instagram, Music } from 'lucide-react';
+import { Linkedin, Twitter, Globe } from 'lucide-react';
 
 interface SocialMediaLinksProps {
-  instagram?: string;
-  tiktok?: string;
+  twitter?: string;
+  linkedin?: string;
+  website?: string;
 }
 
 export const SocialMediaLinks = ({
-  instagram = 'https://instagram.com',
-  tiktok = 'https://tiktok.com'
+  twitter = 'https://x.com',
+  linkedin = 'https://linkedin.com',
+  website = 'https://example.com'
 }: SocialMediaLinksProps) => (
-  <div className="flex items-center justify-center gap-4 px-3 py-4 border-t border-gray-700">
+  <div className="flex items-center justify-center gap-3 px-3 py-4 border-t border-gray-700">
     <a
-      href={instagram}
+      href={website}
       target="_blank"
       rel="noopener noreferrer"
-      className="p-2 text-gray-400 transition-colors rounded-lg hover:text-pink-500 hover:bg-gray-700/50"
-      aria-label="Follow on Instagram"
+      className="p-2 text-gray-400 transition-colors rounded-lg hover:text-blue-500 hover:bg-gray-700/50"
+      aria-label="Visit website"
+      title="Website"
     >
-      <Instagram className="w-5 h-5" />
+      <Globe className="w-5 h-5" />
     </a>
     <a
-      href={tiktok}
+      href={twitter}
       target="_blank"
       rel="noopener noreferrer"
-      className="p-2 text-gray-400 transition-colors rounded-lg hover:text-white hover:bg-gray-700/50"
-      aria-label="Follow on TikTok"
+      className="p-2 text-gray-400 transition-colors rounded-lg hover:text-blue-400 hover:bg-gray-700/50"
+      aria-label="Follow on X/Twitter"
+      title="X (Twitter)"
     >
-      <Music className="w-5 h-5" />
+      <Twitter className="w-5 h-5" />
+    </a>
+    <a
+      href={linkedin}
+      target="_blank"
+      rel="noopener noreferrer"
+      className="p-2 text-gray-400 transition-colors rounded-lg hover:text-blue-600 hover:bg-gray-700/50"
+      aria-label="Connect on LinkedIn"
+      title="LinkedIn"
+    >
+      <Linkedin className="w-5 h-5" />
     </a>
   </div>
 );

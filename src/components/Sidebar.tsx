@@ -103,6 +103,10 @@ export const Sidebar = ({
     </div>
 
     {/* Social Media Links */}
-    <SocialMediaLinks />
+    <SocialMediaLinks
+      website="https://enterpoint.online/"
+      twitter="https://x.com/point_enter"
+      linkedin="https://www.linkedin.com/in/rezaalhajjii/"
+    />
   </div>
 ); 
