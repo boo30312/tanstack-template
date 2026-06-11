@@ -11,14 +11,147 @@
 // Import Routes
 
 import { Route as rootRoute } from './routes/__root'
+import { Route as AcademyImport } from './routes/academy'
 import { Route as IndexImport } from './routes/index'
+import { Route as AcademyIndexImport } from './routes/academy/index'
+import { Route as AcademyWorkshopsImport } from './routes/academy/workshops'
+import { Route as AcademyUpdatesImport } from './routes/academy/updates'
+import { Route as AcademyTrainersImport } from './routes/academy/trainers'
+import { Route as AcademyTasksImport } from './routes/academy/tasks'
+import { Route as AcademyStudentsImport } from './routes/academy/students'
+import { Route as AcademySocialImport } from './routes/academy/social'
+import { Route as AcademySettingsImport } from './routes/academy/settings'
+import { Route as AcademyReportsImport } from './routes/academy/reports'
+import { Route as AcademyPaymentsImport } from './routes/academy/payments'
+import { Route as AcademyNotificationsImport } from './routes/academy/notifications'
+import { Route as AcademyLiveImport } from './routes/academy/live'
+import { Route as AcademyLeadsImport } from './routes/academy/leads'
+import { Route as AcademyInvoicesImport } from './routes/academy/invoices'
+import { Route as AcademyDealsImport } from './routes/academy/deals'
+import { Route as AcademyCoursesImport } from './routes/academy/courses'
+import { Route as AcademyArticlesImport } from './routes/academy/articles'
+import { Route as AcademyAiAssistantImport } from './routes/academy/ai-assistant'
 
 // Create/Update Routes
+
+const AcademyRoute = AcademyImport.update({
+  id: '/academy',
+  path: '/academy',
+  getParentRoute: () => rootRoute,
+} as any)
 
 const IndexRoute = IndexImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRoute,
+} as any)
+
+const AcademyIndexRoute = AcademyIndexImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => AcademyRoute,
+} as any)
+
+const AcademyWorkshopsRoute = AcademyWorkshopsImport.update({
+  id: '/workshops',
+  path: '/workshops',
+  getParentRoute: () => AcademyRoute,
+} as any)
+
+const AcademyUpdatesRoute = AcademyUpdatesImport.update({
+  id: '/updates',
+  path: '/updates',
+  getParentRoute: () => AcademyRoute,
+} as any)
+
+const AcademyTrainersRoute = AcademyTrainersImport.update({
+  id: '/trainers',
+  path: '/trainers',
+  getParentRoute: () => AcademyRoute,
+} as any)
+
+const AcademyTasksRoute = AcademyTasksImport.update({
+  id: '/tasks',
+  path: '/tasks',
+  getParentRoute: () => AcademyRoute,
+} as any)
+
+const AcademyStudentsRoute = AcademyStudentsImport.update({
+  id: '/students',
+  path: '/students',
+  getParentRoute: () => AcademyRoute,
+} as any)
+
+const AcademySocialRoute = AcademySocialImport.update({
+  id: '/social',
+  path: '/social',
+  getParentRoute: () => AcademyRoute,
+} as any)
+
+const AcademySettingsRoute = AcademySettingsImport.update({
+  id: '/settings',
+  path: '/settings',
+  getParentRoute: () => AcademyRoute,
+} as any)
+
+const AcademyReportsRoute = AcademyReportsImport.update({
+  id: '/reports',
+  path: '/reports',
+  getParentRoute: () => AcademyRoute,
+} as any)
+
+const AcademyPaymentsRoute = AcademyPaymentsImport.update({
+  id: '/payments',
+  path: '/payments',
+  getParentRoute: () => AcademyRoute,
+} as any)
+
+const AcademyNotificationsRoute = AcademyNotificationsImport.update({
+  id: '/notifications',
+  path: '/notifications',
+  getParentRoute: () => AcademyRoute,
+} as any)
+
+const AcademyLiveRoute = AcademyLiveImport.update({
+  id: '/live',
+  path: '/live',
+  getParentRoute: () => AcademyRoute,
+} as any)
+
+const AcademyLeadsRoute = AcademyLeadsImport.update({
+  id: '/leads',
+  path: '/leads',
+  getParentRoute: () => AcademyRoute,
+} as any)
+
+const AcademyInvoicesRoute = AcademyInvoicesImport.update({
+  id: '/invoices',
+  path: '/invoices',
+  getParentRoute: () => AcademyRoute,
+} as any)
+
+const AcademyDealsRoute = AcademyDealsImport.update({
+  id: '/deals',
+  path: '/deals',
+  getParentRoute: () => AcademyRoute,
+} as any)
+
+const AcademyCoursesRoute = AcademyCoursesImport.update({
+  id: '/courses',
+  path: '/courses',
+  getParentRoute: () => AcademyRoute,
+} as any)
+
+const AcademyArticlesRoute = AcademyArticlesImport.update({
+  id: '/articles',
+  path: '/articles',
+  getParentRoute: () => AcademyRoute,
+} as any)
+
+const AcademyAiAssistantRoute = AcademyAiAssistantImport.update({
+  id: '/ai-assistant',
+  path: '/ai-assistant',
+  getParentRoute: () => AcademyRoute,
 } as any)
 
 // Populate the FileRoutesByPath interface
@@ -32,39 +165,335 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexImport
       parentRoute: typeof rootRoute
     }
+    '/academy': {
+      id: '/academy'
+      path: '/academy'
+      fullPath: '/academy'
+      preLoaderRoute: typeof AcademyImport
+      parentRoute: typeof rootRoute
+    }
+    '/academy/ai-assistant': {
+      id: '/academy/ai-assistant'
+      path: '/ai-assistant'
+      fullPath: '/academy/ai-assistant'
+      preLoaderRoute: typeof AcademyAiAssistantImport
+      parentRoute: typeof AcademyImport
+    }
+    '/academy/articles': {
+      id: '/academy/articles'
+      path: '/articles'
+      fullPath: '/academy/articles'
+      preLoaderRoute: typeof AcademyArticlesImport
+      parentRoute: typeof AcademyImport
+    }
+    '/academy/courses': {
+      id: '/academy/courses'
+      path: '/courses'
+      fullPath: '/academy/courses'
+      preLoaderRoute: typeof AcademyCoursesImport
+      parentRoute: typeof AcademyImport
+    }
+    '/academy/deals': {
+      id: '/academy/deals'
+      path: '/deals'
+      fullPath: '/academy/deals'
+      preLoaderRoute: typeof AcademyDealsImport
+      parentRoute: typeof AcademyImport
+    }
+    '/academy/invoices': {
+      id: '/academy/invoices'
+      path: '/invoices'
+      fullPath: '/academy/invoices'
+      preLoaderRoute: typeof AcademyInvoicesImport
+      parentRoute: typeof AcademyImport
+    }
+    '/academy/leads': {
+      id: '/academy/leads'
+      path: '/leads'
+      fullPath: '/academy/leads'
+      preLoaderRoute: typeof AcademyLeadsImport
+      parentRoute: typeof AcademyImport
+    }
+    '/academy/live': {
+      id: '/academy/live'
+      path: '/live'
+      fullPath: '/academy/live'
+      preLoaderRoute: typeof AcademyLiveImport
+      parentRoute: typeof AcademyImport
+    }
+    '/academy/notifications': {
+      id: '/academy/notifications'
+      path: '/notifications'
+      fullPath: '/academy/notifications'
+      preLoaderRoute: typeof AcademyNotificationsImport
+      parentRoute: typeof AcademyImport
+    }
+    '/academy/payments': {
+      id: '/academy/payments'
+      path: '/payments'
+      fullPath: '/academy/payments'
+      preLoaderRoute: typeof AcademyPaymentsImport
+      parentRoute: typeof AcademyImport
+    }
+    '/academy/reports': {
+      id: '/academy/reports'
+      path: '/reports'
+      fullPath: '/academy/reports'
+      preLoaderRoute: typeof AcademyReportsImport
+      parentRoute: typeof AcademyImport
+    }
+    '/academy/settings': {
+      id: '/academy/settings'
+      path: '/settings'
+      fullPath: '/academy/settings'
+      preLoaderRoute: typeof AcademySettingsImport
+      parentRoute: typeof AcademyImport
+    }
+    '/academy/social': {
+      id: '/academy/social'
+      path: '/social'
+      fullPath: '/academy/social'
+      preLoaderRoute: typeof AcademySocialImport
+      parentRoute: typeof AcademyImport
+    }
+    '/academy/students': {
+      id: '/academy/students'
+      path: '/students'
+      fullPath: '/academy/students'
+      preLoaderRoute: typeof AcademyStudentsImport
+      parentRoute: typeof AcademyImport
+    }
+    '/academy/tasks': {
+      id: '/academy/tasks'
+      path: '/tasks'
+      fullPath: '/academy/tasks'
+      preLoaderRoute: typeof AcademyTasksImport
+      parentRoute: typeof AcademyImport
+    }
+    '/academy/trainers': {
+      id: '/academy/trainers'
+      path: '/trainers'
+      fullPath: '/academy/trainers'
+      preLoaderRoute: typeof AcademyTrainersImport
+      parentRoute: typeof AcademyImport
+    }
+    '/academy/updates': {
+      id: '/academy/updates'
+      path: '/updates'
+      fullPath: '/academy/updates'
+      preLoaderRoute: typeof AcademyUpdatesImport
+      parentRoute: typeof AcademyImport
+    }
+    '/academy/workshops': {
+      id: '/academy/workshops'
+      path: '/workshops'
+      fullPath: '/academy/workshops'
+      preLoaderRoute: typeof AcademyWorkshopsImport
+      parentRoute: typeof AcademyImport
+    }
+    '/academy/': {
+      id: '/academy/'
+      path: '/'
+      fullPath: '/academy/'
+      preLoaderRoute: typeof AcademyIndexImport
+      parentRoute: typeof AcademyImport
+    }
   }
 }
 
 // Create and export the route tree
 
+interface AcademyRouteChildren {
+  AcademyAiAssistantRoute: typeof AcademyAiAssistantRoute
+  AcademyArticlesRoute: typeof AcademyArticlesRoute
+  AcademyCoursesRoute: typeof AcademyCoursesRoute
+  AcademyDealsRoute: typeof AcademyDealsRoute
+  AcademyInvoicesRoute: typeof AcademyInvoicesRoute
+  AcademyLeadsRoute: typeof AcademyLeadsRoute
+  AcademyLiveRoute: typeof AcademyLiveRoute
+  AcademyNotificationsRoute: typeof AcademyNotificationsRoute
+  AcademyPaymentsRoute: typeof AcademyPaymentsRoute
+  AcademyReportsRoute: typeof AcademyReportsRoute
+  AcademySettingsRoute: typeof AcademySettingsRoute
+  AcademySocialRoute: typeof AcademySocialRoute
+  AcademyStudentsRoute: typeof AcademyStudentsRoute
+  AcademyTasksRoute: typeof AcademyTasksRoute
+  AcademyTrainersRoute: typeof AcademyTrainersRoute
+  AcademyUpdatesRoute: typeof AcademyUpdatesRoute
+  AcademyWorkshopsRoute: typeof AcademyWorkshopsRoute
+  AcademyIndexRoute: typeof AcademyIndexRoute
+}
+
+const AcademyRouteChildren: AcademyRouteChildren = {
+  AcademyAiAssistantRoute: AcademyAiAssistantRoute,
+  AcademyArticlesRoute: AcademyArticlesRoute,
+  AcademyCoursesRoute: AcademyCoursesRoute,
+  AcademyDealsRoute: AcademyDealsRoute,
+  AcademyInvoicesRoute: AcademyInvoicesRoute,
+  AcademyLeadsRoute: AcademyLeadsRoute,
+  AcademyLiveRoute: AcademyLiveRoute,
+  AcademyNotificationsRoute: AcademyNotificationsRoute,
+  AcademyPaymentsRoute: AcademyPaymentsRoute,
+  AcademyReportsRoute: AcademyReportsRoute,
+  AcademySettingsRoute: AcademySettingsRoute,
+  AcademySocialRoute: AcademySocialRoute,
+  AcademyStudentsRoute: AcademyStudentsRoute,
+  AcademyTasksRoute: AcademyTasksRoute,
+  AcademyTrainersRoute: AcademyTrainersRoute,
+  AcademyUpdatesRoute: AcademyUpdatesRoute,
+  AcademyWorkshopsRoute: AcademyWorkshopsRoute,
+  AcademyIndexRoute: AcademyIndexRoute,
+}
+
+const AcademyRouteWithChildren =
+  AcademyRoute._addFileChildren(AcademyRouteChildren)
+
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/academy': typeof AcademyRouteWithChildren
+  '/academy/ai-assistant': typeof AcademyAiAssistantRoute
+  '/academy/articles': typeof AcademyArticlesRoute
+  '/academy/courses': typeof AcademyCoursesRoute
+  '/academy/deals': typeof AcademyDealsRoute
+  '/academy/invoices': typeof AcademyInvoicesRoute
+  '/academy/leads': typeof AcademyLeadsRoute
+  '/academy/live': typeof AcademyLiveRoute
+  '/academy/notifications': typeof AcademyNotificationsRoute
+  '/academy/payments': typeof AcademyPaymentsRoute
+  '/academy/reports': typeof AcademyReportsRoute
+  '/academy/settings': typeof AcademySettingsRoute
+  '/academy/social': typeof AcademySocialRoute
+  '/academy/students': typeof AcademyStudentsRoute
+  '/academy/tasks': typeof AcademyTasksRoute
+  '/academy/trainers': typeof AcademyTrainersRoute
+  '/academy/updates': typeof AcademyUpdatesRoute
+  '/academy/workshops': typeof AcademyWorkshopsRoute
+  '/academy/': typeof AcademyIndexRoute
 }
 
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/academy/ai-assistant': typeof AcademyAiAssistantRoute
+  '/academy/articles': typeof AcademyArticlesRoute
+  '/academy/courses': typeof AcademyCoursesRoute
+  '/academy/deals': typeof AcademyDealsRoute
+  '/academy/invoices': typeof AcademyInvoicesRoute
+  '/academy/leads': typeof AcademyLeadsRoute
+  '/academy/live': typeof AcademyLiveRoute
+  '/academy/notifications': typeof AcademyNotificationsRoute
+  '/academy/payments': typeof AcademyPaymentsRoute
+  '/academy/reports': typeof AcademyReportsRoute
+  '/academy/settings': typeof AcademySettingsRoute
+  '/academy/social': typeof AcademySocialRoute
+  '/academy/students': typeof AcademyStudentsRoute
+  '/academy/tasks': typeof AcademyTasksRoute
+  '/academy/trainers': typeof AcademyTrainersRoute
+  '/academy/updates': typeof AcademyUpdatesRoute
+  '/academy/workshops': typeof AcademyWorkshopsRoute
+  '/academy': typeof AcademyIndexRoute
 }
 
 export interface FileRoutesById {
   __root__: typeof rootRoute
   '/': typeof IndexRoute
+  '/academy': typeof AcademyRouteWithChildren
+  '/academy/ai-assistant': typeof AcademyAiAssistantRoute
+  '/academy/articles': typeof AcademyArticlesRoute
+  '/academy/courses': typeof AcademyCoursesRoute
+  '/academy/deals': typeof AcademyDealsRoute
+  '/academy/invoices': typeof AcademyInvoicesRoute
+  '/academy/leads': typeof AcademyLeadsRoute
+  '/academy/live': typeof AcademyLiveRoute
+  '/academy/notifications': typeof AcademyNotificationsRoute
+  '/academy/payments': typeof AcademyPaymentsRoute
+  '/academy/reports': typeof AcademyReportsRoute
+  '/academy/settings': typeof AcademySettingsRoute
+  '/academy/social': typeof AcademySocialRoute
+  '/academy/students': typeof AcademyStudentsRoute
+  '/academy/tasks': typeof AcademyTasksRoute
+  '/academy/trainers': typeof AcademyTrainersRoute
+  '/academy/updates': typeof AcademyUpdatesRoute
+  '/academy/workshops': typeof AcademyWorkshopsRoute
+  '/academy/': typeof AcademyIndexRoute
 }
 
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths:
+    | '/'
+    | '/academy'
+    | '/academy/ai-assistant'
+    | '/academy/articles'
+    | '/academy/courses'
+    | '/academy/deals'
+    | '/academy/invoices'
+    | '/academy/leads'
+    | '/academy/live'
+    | '/academy/notifications'
+    | '/academy/payments'
+    | '/academy/reports'
+    | '/academy/settings'
+    | '/academy/social'
+    | '/academy/students'
+    | '/academy/tasks'
+    | '/academy/trainers'
+    | '/academy/updates'
+    | '/academy/workshops'
+    | '/academy/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to:
+    | '/'
+    | '/academy/ai-assistant'
+    | '/academy/articles'
+    | '/academy/courses'
+    | '/academy/deals'
+    | '/academy/invoices'
+    | '/academy/leads'
+    | '/academy/live'
+    | '/academy/notifications'
+    | '/academy/payments'
+    | '/academy/reports'
+    | '/academy/settings'
+    | '/academy/social'
+    | '/academy/students'
+    | '/academy/tasks'
+    | '/academy/trainers'
+    | '/academy/updates'
+    | '/academy/workshops'
+    | '/academy'
+  id:
+    | '__root__'
+    | '/'
+    | '/academy'
+    | '/academy/ai-assistant'
+    | '/academy/articles'
+    | '/academy/courses'
+    | '/academy/deals'
+    | '/academy/invoices'
+    | '/academy/leads'
+    | '/academy/live'
+    | '/academy/notifications'
+    | '/academy/payments'
+    | '/academy/reports'
+    | '/academy/settings'
+    | '/academy/social'
+    | '/academy/students'
+    | '/academy/tasks'
+    | '/academy/trainers'
+    | '/academy/updates'
+    | '/academy/workshops'
+    | '/academy/'
   fileRoutesById: FileRoutesById
 }
 
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AcademyRoute: typeof AcademyRouteWithChildren
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AcademyRoute: AcademyRouteWithChildren,
 }
 
 export const routeTree = rootRoute
@@ -77,11 +506,107 @@ export const routeTree = rootRoute
     "__root__": {
       "filePath": "__root.tsx",
       "children": [
-        "/"
+        "/",
+        "/academy"
       ]
     },
     "/": {
       "filePath": "index.tsx"
+    },
+    "/academy": {
+      "filePath": "academy.tsx",
+      "children": [
+        "/academy/ai-assistant",
+        "/academy/articles",
+        "/academy/courses",
+        "/academy/deals",
+        "/academy/invoices",
+        "/academy/leads",
+        "/academy/live",
+        "/academy/notifications",
+        "/academy/payments",
+        "/academy/reports",
+        "/academy/settings",
+        "/academy/social",
+        "/academy/students",
+        "/academy/tasks",
+        "/academy/trainers",
+        "/academy/updates",
+        "/academy/workshops",
+        "/academy/"
+      ]
+    },
+    "/academy/ai-assistant": {
+      "filePath": "academy/ai-assistant.tsx",
+      "parent": "/academy"
+    },
+    "/academy/articles": {
+      "filePath": "academy/articles.tsx",
+      "parent": "/academy"
+    },
+    "/academy/courses": {
+      "filePath": "academy/courses.tsx",
+      "parent": "/academy"
+    },
+    "/academy/deals": {
+      "filePath": "academy/deals.tsx",
+      "parent": "/academy"
+    },
+    "/academy/invoices": {
+      "filePath": "academy/invoices.tsx",
+      "parent": "/academy"
+    },
+    "/academy/leads": {
+      "filePath": "academy/leads.tsx",
+      "parent": "/academy"
+    },
+    "/academy/live": {
+      "filePath": "academy/live.tsx",
+      "parent": "/academy"
+    },
+    "/academy/notifications": {
+      "filePath": "academy/notifications.tsx",
+      "parent": "/academy"
+    },
+    "/academy/payments": {
+      "filePath": "academy/payments.tsx",
+      "parent": "/academy"
+    },
+    "/academy/reports": {
+      "filePath": "academy/reports.tsx",
+      "parent": "/academy"
+    },
+    "/academy/settings": {
+      "filePath": "academy/settings.tsx",
+      "parent": "/academy"
+    },
+    "/academy/social": {
+      "filePath": "academy/social.tsx",
+      "parent": "/academy"
+    },
+    "/academy/students": {
+      "filePath": "academy/students.tsx",
+      "parent": "/academy"
+    },
+    "/academy/tasks": {
+      "filePath": "academy/tasks.tsx",
+      "parent": "/academy"
+    },
+    "/academy/trainers": {
+      "filePath": "academy/trainers.tsx",
+      "parent": "/academy"
+    },
+    "/academy/updates": {
+      "filePath": "academy/updates.tsx",
+      "parent": "/academy"
+    },
+    "/academy/workshops": {
+      "filePath": "academy/workshops.tsx",
+      "parent": "/academy"
+    },
+    "/academy/": {
+      "filePath": "academy/index.tsx",
+      "parent": "/academy"
     }
   }
 }
