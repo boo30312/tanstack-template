@@ -30,6 +30,7 @@ import { Route as AcademyInvoicesImport } from './routes/academy/invoices'
 import { Route as AcademyDealsImport } from './routes/academy/deals'
 import { Route as AcademyCoursesImport } from './routes/academy/courses'
 import { Route as AcademyArticlesImport } from './routes/academy/articles'
+import { Route as AcademyAiAssistantImport } from './routes/academy/ai-assistant'
 
 // Create/Update Routes
 
@@ -147,6 +148,12 @@ const AcademyArticlesRoute = AcademyArticlesImport.update({
   getParentRoute: () => AcademyRoute,
 } as any)
 
+const AcademyAiAssistantRoute = AcademyAiAssistantImport.update({
+  id: '/ai-assistant',
+  path: '/ai-assistant',
+  getParentRoute: () => AcademyRoute,
+} as any)
+
 // Populate the FileRoutesByPath interface
 
 declare module '@tanstack/react-router' {
@@ -164,6 +171,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/academy'
       preLoaderRoute: typeof AcademyImport
       parentRoute: typeof rootRoute
+    }
+    '/academy/ai-assistant': {
+      id: '/academy/ai-assistant'
+      path: '/ai-assistant'
+      fullPath: '/academy/ai-assistant'
+      preLoaderRoute: typeof AcademyAiAssistantImport
+      parentRoute: typeof AcademyImport
     }
     '/academy/articles': {
       id: '/academy/articles'
@@ -290,6 +304,7 @@ declare module '@tanstack/react-router' {
 // Create and export the route tree
 
 interface AcademyRouteChildren {
+  AcademyAiAssistantRoute: typeof AcademyAiAssistantRoute
   AcademyArticlesRoute: typeof AcademyArticlesRoute
   AcademyCoursesRoute: typeof AcademyCoursesRoute
   AcademyDealsRoute: typeof AcademyDealsRoute
@@ -310,6 +325,7 @@ interface AcademyRouteChildren {
 }
 
 const AcademyRouteChildren: AcademyRouteChildren = {
+  AcademyAiAssistantRoute: AcademyAiAssistantRoute,
   AcademyArticlesRoute: AcademyArticlesRoute,
   AcademyCoursesRoute: AcademyCoursesRoute,
   AcademyDealsRoute: AcademyDealsRoute,
@@ -335,6 +351,7 @@ const AcademyRouteWithChildren =
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/academy': typeof AcademyRouteWithChildren
+  '/academy/ai-assistant': typeof AcademyAiAssistantRoute
   '/academy/articles': typeof AcademyArticlesRoute
   '/academy/courses': typeof AcademyCoursesRoute
   '/academy/deals': typeof AcademyDealsRoute
@@ -356,6 +373,7 @@ export interface FileRoutesByFullPath {
 
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/academy/ai-assistant': typeof AcademyAiAssistantRoute
   '/academy/articles': typeof AcademyArticlesRoute
   '/academy/courses': typeof AcademyCoursesRoute
   '/academy/deals': typeof AcademyDealsRoute
@@ -379,6 +397,7 @@ export interface FileRoutesById {
   __root__: typeof rootRoute
   '/': typeof IndexRoute
   '/academy': typeof AcademyRouteWithChildren
+  '/academy/ai-assistant': typeof AcademyAiAssistantRoute
   '/academy/articles': typeof AcademyArticlesRoute
   '/academy/courses': typeof AcademyCoursesRoute
   '/academy/deals': typeof AcademyDealsRoute
@@ -403,6 +422,7 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/academy'
+    | '/academy/ai-assistant'
     | '/academy/articles'
     | '/academy/courses'
     | '/academy/deals'
@@ -423,6 +443,7 @@ export interface FileRouteTypes {
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/academy/ai-assistant'
     | '/academy/articles'
     | '/academy/courses'
     | '/academy/deals'
@@ -444,6 +465,7 @@ export interface FileRouteTypes {
     | '__root__'
     | '/'
     | '/academy'
+    | '/academy/ai-assistant'
     | '/academy/articles'
     | '/academy/courses'
     | '/academy/deals'
@@ -494,6 +516,7 @@ export const routeTree = rootRoute
     "/academy": {
       "filePath": "academy.tsx",
       "children": [
+        "/academy/ai-assistant",
         "/academy/articles",
         "/academy/courses",
         "/academy/deals",
@@ -512,6 +535,10 @@ export const routeTree = rootRoute
         "/academy/workshops",
         "/academy/"
       ]
+    },
+    "/academy/ai-assistant": {
+      "filePath": "academy/ai-assistant.tsx",
+      "parent": "/academy"
     },
     "/academy/articles": {
       "filePath": "academy/articles.tsx",

@@ -19,6 +19,7 @@ import {
   Menu,
   X,
   Clock,
+  Lightbulb,
 } from 'lucide-react'
 import { useNavigate, useLocation } from '@tanstack/react-router'
 
@@ -37,6 +38,13 @@ const navigationItems: NavItem[] = [
     label: 'لوحة التحكم',
     icon: <Home size={20} />,
     path: '/academy',
+  },
+  {
+    id: 'ai-assistant',
+    label: 'المساعد الذكي',
+    icon: <Lightbulb size={20} />,
+    path: '/academy/ai-assistant',
+    badge: '🤖',
   },
   {
     id: 'overview',
