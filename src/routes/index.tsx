@@ -1,379 +1,331 @@
 import { createFileRoute } from '@tanstack/react-router'
-import { useEffect, useState, useRef, useCallback, useMemo } from 'react'
-import { Settings } from 'lucide-react'
+import { useMemo, useState } from 'react'
 import {
-  SettingsDialog,
-  ChatMessage,
-  LoadingIndicator,
-  ChatInput,
-  Sidebar,
-  WelcomeScreen,
-  TopBanner
-} from '../components'
-import { useConversations, useAppState, store, actions } from '../store'
-import { genAIResponse, type Message } from '../utils'
+  BadgeCheck,
+  CalendarDays,
+  Clock,
+  Lock,
+  Pencil,
+  Plus,
+  Trash2,
+  X,
+} from 'lucide-react'
+import { PortalLayout } from '../portal/PortalLayout'
+import {
+  ARTICLES,
+  CONTRIBUTOR,
+  type SocialLink,
+} from '../portal/data'
+import { SOCIAL_ICONS, SOCIAL_LABELS } from '../portal/icons'
 
-function Home() {
-  const {
-    conversations,
-    currentConversationId,
-    currentConversation,
-    setCurrentConversationId,
-    createNewConversation,
-    updateConversationTitle,
-    deleteConversation,
-    addMessage,
-  } = useConversations()
-  
-  const { isLoading, setLoading, getActivePrompt } = useAppState()
+function fmtDate(iso: string) {
+  return new Intl.DateTimeFormat('ar', {
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric',
+  }).format(new Date(iso))
+}
 
-  // Memoize messages to prevent unnecessary re-renders
-  const messages = useMemo(() => currentConversation?.messages || [], [currentConversation]);
+function ProfilePage() {
+  const [socials, setSocials] = useState<SocialLink[]>(CONTRIBUTOR.socials)
+  const [editing, setEditing] = useState(false)
 
-  // Local state
-  const [input, setInput] = useState('')
-  const [editingChatId, setEditingChatId] = useState<string | null>(null)
-  const [editingTitle, setEditingTitle] = useState('')
-  const [isSettingsOpen, setIsSettingsOpen] = useState(false)
-  const messagesContainerRef = useRef<HTMLDivElement>(null)
-  const [pendingMessage, setPendingMessage] = useState<Message | null>(null)
-  const [error, setError] = useState<string | null>(null);
+  // Article filters
+  const [from, setFrom] = useState('')
+  const [to, setTo] = useState('')
+  const [category, setCategory] = useState('all')
 
-  const scrollToBottom = useCallback((smooth: boolean = false) => {
-    if (messagesContainerRef.current) {
-      messagesContainerRef.current.scrollTo({
-        top: messagesContainerRef.current.scrollHeight,
-        behavior: smooth ? 'smooth' : 'auto'
-      })
-    }
-  }, []);
+  const categories = useMemo(
+    () => ['all', ...Array.from(new Set(ARTICLES.map((a) => a.category)))],
+    [],
+  )
 
-  // Scroll to bottom when messages change or loading state changes
-  useEffect(() => {
-    scrollToBottom(false)
-  }, [messages, scrollToBottom])
-
-  // Smooth scroll during streaming
-  useEffect(() => {
-    if (pendingMessage && isLoading) {
-      scrollToBottom(true)
-    }
-  }, [pendingMessage, isLoading, scrollToBottom])
-
-  const createTitleFromInput = useCallback((text: string) => {
-    const words = text.trim().split(/\s+/)
-    const firstThreeWords = words.slice(0, 3).join(' ')
-    return firstThreeWords + (words.length > 3 ? '...' : '')
-  }, []);
-
-  // Helper function to process AI response
-  const processAIResponse = useCallback(async (conversationId: string, userMessage: Message) => {
-    try {
-      // Get active prompt
-      const activePrompt = getActivePrompt(store.state)
-      let systemPrompt
-      if (activePrompt) {
-        systemPrompt = {
-          value: activePrompt.content,
-          enabled: true,
-        }
-      }
-
-      // Get AI response
-      const response = await genAIResponse({
-        data: {
-          messages: [...messages, userMessage],
-          systemPrompt,
-        },
-      })
-
-      const reader = response.body?.getReader()
-      if (!reader) {
-        throw new Error('No reader found in response')
-      }
-
-      const decoder = new TextDecoder()
-
-      let done = false
-      let newMessage = {
-        id: (Date.now() + 1).toString(),
-        role: 'assistant' as const,
-        content: '',
-      }
-      let buffer = '' // Buffer to accumulate partial JSON chunks
-      let pendingTextQueue: string[] = [] // Queue of text chunks to render
-      let isRendering = false
-
-      // Smooth character-by-character rendering with adaptive speed
-      const renderTextSmoothly = async () => {
-        if (isRendering) return
-        isRendering = true
-
-        while (pendingTextQueue.length > 0) {
-          const chunk = pendingTextQueue.shift()!
-
-          // Adaptive rendering: faster for code blocks, smoother for regular text
-          const isCodeBlock = newMessage.content.includes('```') &&
-                             newMessage.content.split('```').length % 2 === 0
-
-          // Characters per frame and delay based on content type
-          const charsPerFrame = isCodeBlock ? 5 : 2 // Faster for code
-          const delay = isCodeBlock ? 2 : 5 // Shorter delay for code
-
-          for (let i = 0; i < chunk.length; i += charsPerFrame) {
-            const slice = chunk.slice(i, i + charsPerFrame)
-            newMessage = {
-              ...newMessage,
-              content: newMessage.content + slice,
-            }
-            setPendingMessage({ ...newMessage })
-
-            // Dynamic delay for natural typing rhythm
-            // ~200-400 chars per second for text, ~500 chars per second for code
-            await new Promise(resolve => setTimeout(resolve, delay))
-          }
-        }
-
-        isRendering = false
-      }
-
-      const scheduleUIUpdate = (text: string) => {
-        pendingTextQueue.push(text)
-        renderTextSmoothly()
-      }
-
-      while (!done) {
-        const out = await reader.read()
-        done = out.done
-        if (!done && out.value) {
-          // Decode the chunk and add to buffer
-          buffer += decoder.decode(out.value, { stream: true })
-
-          // Split by newlines to get complete JSON objects
-          const lines = buffer.split('\n')
-
-          // Keep the last incomplete line in the buffer
-          buffer = lines.pop() || ''
-
-          // Process each complete line
-          for (const line of lines) {
-            if (line.trim()) {
-              try {
-                const json = JSON.parse(line)
-                if (json.type === 'content_block_delta' && json.delta?.text) {
-                  scheduleUIUpdate(json.delta.text)
-                }
-              } catch (e) {
-                console.error('Error parsing streaming response:', e, 'Line:', line)
-              }
-            }
-          }
-        }
-      }
-
-      // Wait for any remaining text to finish rendering
-      while (pendingTextQueue.length > 0 || isRendering) {
-        await new Promise(resolve => setTimeout(resolve, 50))
-      }
-
-      setPendingMessage(null)
-      if (newMessage.content.trim()) {
-        // Add AI message to Convex
-        console.log('Adding AI response to conversation:', conversationId)
-        await addMessage(conversationId, newMessage)
-      }
-    } catch (error) {
-      console.error('Error in AI response:', error)
-      // Add an error message to the conversation
-      const errorMessage: Message = {
-        id: (Date.now() + 1).toString(),
-        role: 'assistant' as const,
-        content: 'Sorry, I encountered an error generating a response. Please set the required API keys in your environment variables.',
-      }
-      await addMessage(conversationId, errorMessage)
-    }
-  }, [messages, getActivePrompt, addMessage]);
-
-  const handleSubmit = useCallback(async (e: React.FormEvent) => {
-    e.preventDefault()
-    if (!input.trim() || isLoading) return
-
-    const currentInput = input
-    setInput('') // Clear input early for better UX
-    setLoading(true)
-    setError(null)
-    
-    const conversationTitle = createTitleFromInput(currentInput)
-
-    try {
-      // Create the user message object
-      const userMessage: Message = {
-        id: Date.now().toString(),
-        role: 'user' as const,
-        content: currentInput.trim(),
-      }
-      
-      let conversationId = currentConversationId
-
-      // If no current conversation, create one in Convex first
-      if (!conversationId) {
-        try {
-          console.log('Creating new Convex conversation with title:', conversationTitle)
-          // Create a new conversation with our title
-          const convexId = await createNewConversation(conversationTitle)
-          
-          if (convexId) {
-            console.log('Successfully created Convex conversation with ID:', convexId)
-            conversationId = convexId
-            
-            // Add user message directly to Convex
-            console.log('Adding user message to Convex conversation:', userMessage.content)
-            await addMessage(conversationId, userMessage)
-          } else {
-            console.warn('Failed to create Convex conversation, falling back to local')
-            // Fallback to local storage if Convex creation failed
-            const tempId = Date.now().toString()
-            const tempConversation = {
-              id: tempId,
-              title: conversationTitle,
-              messages: [],
-            }
-            
-            actions.addConversation(tempConversation)
-            conversationId = tempId
-            
-            // Add user message to local state
-            actions.addMessage(conversationId, userMessage)
-          }
-        } catch (error) {
-          console.error('Error creating conversation:', error)
-          throw new Error('Failed to create conversation')
-        }
-      } else {
-        // We already have a conversation ID, add message directly to Convex
-        console.log('Adding user message to existing conversation:', conversationId)
-        await addMessage(conversationId, userMessage)
-      }
-      
-      // Process with AI after message is stored
-      await processAIResponse(conversationId, userMessage)
-      
-    } catch (error) {
-      console.error('Error:', error)
-      const errorMessage: Message = {
-        id: (Date.now() + 1).toString(),
-        role: 'assistant' as const,
-        content: 'Sorry, I encountered an error processing your request.',
-      }
-      if (currentConversationId) {
-        await addMessage(currentConversationId, errorMessage)
-      }
-      else {
-        if (error instanceof Error) {
-          setError(error.message)
-        } else {
-          setError('An unknown error occurred.')
-        }
-      }
-    } finally {
-      setLoading(false)
-    }
-  }, [input, isLoading, createTitleFromInput, currentConversationId, createNewConversation, addMessage, processAIResponse, setLoading]);
-
-  const handleNewChat = useCallback(() => {
-    createNewConversation()
-  }, [createNewConversation]);
-
-  const handleDeleteChat = useCallback(async (id: string) => {
-    await deleteConversation(id)
-  }, [deleteConversation]);
-
-  const handleUpdateChatTitle = useCallback(async (id: string, title: string) => {
-    await updateConversationTitle(id, title)
-    setEditingChatId(null)
-    setEditingTitle('')
-  }, [updateConversationTitle]);
+  const articles = useMemo(() => {
+    return ARTICLES.filter((a) => {
+      if (category !== 'all' && a.category !== category) return false
+      if (from && a.date < from) return false
+      if (to && a.date > to) return false
+      return true
+    })
+  }, [from, to, category])
 
   return (
-    <div className="relative flex h-screen bg-gray-900">
-      {/* Settings Button */}
-      <div className="absolute z-50 top-5 right-5">
-        <button
-          onClick={() => setIsSettingsOpen(true)}
-          className="flex items-center justify-center w-10 h-10 text-white transition-opacity rounded-full bg-gradient-to-r from-orange-500 to-red-600 hover:opacity-90 focus:outline-none focus:ring-2 focus:ring-orange-500"
-        >
-          <Settings className="w-5 h-5" />
-        </button>
-      </div>
-
-      {/* Sidebar */}
-      <Sidebar 
-        conversations={conversations}
-        currentConversationId={currentConversationId}
-        handleNewChat={handleNewChat}
-        setCurrentConversationId={setCurrentConversationId}
-        handleDeleteChat={handleDeleteChat}
-        editingChatId={editingChatId}
-        setEditingChatId={setEditingChatId}
-        editingTitle={editingTitle}
-        setEditingTitle={setEditingTitle}
-        handleUpdateChatTitle={handleUpdateChatTitle}
-      />
-
-      {/* Main Content */}
-      <div className="flex flex-col flex-1">
-        <TopBanner />
-        {error && (
-          <p className="w-full max-w-3xl p-4 mx-auto font-bold text-orange-500">{error}</p>
-        )}
-        {currentConversationId ? (
-          <>
-            {/* Messages */}
-            <div
-              ref={messagesContainerRef}
-              className="flex-1 pb-24 overflow-y-auto messages-container"
-            >
-              <div className="w-full max-w-3xl px-4 mx-auto">
-                {[...messages, pendingMessage]
-                  .filter((message): message is Message => message !== null)
-                  .map((message) => (
-                    <ChatMessage
-                      key={message.id}
-                      message={message}
-                      isStreaming={message === pendingMessage && isLoading}
-                    />
-                  ))}
-                {isLoading && <LoadingIndicator />}
+    <PortalLayout>
+      {/* ===== Hero / identity card (locked) ===== */}
+      <section className="overflow-hidden rounded-2xl bg-white shadow-sm ring-1 ring-gray-100">
+        <div className="h-24 bg-gradient-to-l from-navy via-navy-light to-navy-deep" />
+        <div className="px-6 pb-6">
+          <div className="flex flex-col items-center gap-5 sm:flex-row sm:items-end sm:justify-between">
+            {/* Social + name block */}
+            <div className="order-2 flex w-full flex-col items-center gap-4 sm:order-1 sm:flex-row sm:items-end">
+              {/* Editable social links */}
+              <div className="flex items-center gap-2">
+                {socials.map((s) => {
+                  const Icon = SOCIAL_ICONS[s.network]
+                  return (
+                    <a
+                      key={s.id}
+                      href={s.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      title={SOCIAL_LABELS[s.network]}
+                      className="grid h-10 w-10 place-items-center rounded-full bg-navy text-white transition hover:bg-navy-light"
+                    >
+                      <Icon className="h-[18px] w-[18px]" />
+                    </a>
+                  )
+                })}
+                <button
+                  onClick={() => setEditing(true)}
+                  className="grid h-10 w-10 place-items-center rounded-full border-2 border-dashed border-navy/30 text-navy/60 transition hover:border-navy hover:text-navy"
+                  title="تعديل روابط الحسابات"
+                  aria-label="تعديل روابط الحسابات"
+                >
+                  <Pencil className="h-4 w-4" />
+                </button>
               </div>
             </div>
 
-            {/* Input */}
-            <ChatInput 
-              input={input}
-              setInput={setInput}
-              handleSubmit={handleSubmit}
-              isLoading={isLoading}
-            />
-          </>
-        ) : (
-          <WelcomeScreen 
-            input={input}
-            setInput={setInput}
-            handleSubmit={handleSubmit}
-            isLoading={isLoading}
-          />
-        )}
-      </div>
+            {/* Avatar */}
+            <div className="order-1 -mt-14 sm:order-2 sm:-mt-20">
+              <div className="grid h-28 w-28 place-items-center overflow-hidden rounded-full bg-gradient-to-br from-navy-light to-gold text-3xl font-extrabold text-white ring-4 ring-white sm:h-36 sm:w-36 sm:text-4xl">
+                أأ
+              </div>
+            </div>
+          </div>
 
-      {/* Settings Dialog */}
-      <SettingsDialog
-        isOpen={isSettingsOpen}
-        onClose={() => setIsSettingsOpen(false)}
-      />
+          {/* Name + role */}
+          <div className="mt-4 text-center sm:text-right">
+            <div className="flex flex-col items-center gap-x-3 gap-y-2 sm:flex-row sm:flex-wrap sm:items-center sm:justify-start">
+              <h1 className="text-2xl font-extrabold leading-tight text-navy sm:text-3xl">
+                {CONTRIBUTOR.nameAr}
+                <span className="text-navy-light"> — {CONTRIBUTOR.nameEn}</span>
+              </h1>
+              {CONTRIBUTOR.status === 'verified' && (
+                <span className="inline-flex w-fit items-center gap-1 rounded-full bg-emerald-50 px-2.5 py-1 text-xs font-bold text-emerald-700 ring-1 ring-emerald-200">
+                  <BadgeCheck className="h-4 w-4" /> موثّق
+                </span>
+              )}
+            </div>
+            <p className="mt-1.5 text-gold">{CONTRIBUTOR.roleAr}</p>
+            <p className="mx-auto mt-3 max-w-3xl text-sm leading-7 text-ink/70 sm:mx-0">
+              {CONTRIBUTOR.bioAr}
+            </p>
+          </div>
+
+          <div className="mt-5 flex items-center gap-2 rounded-lg bg-sand px-4 py-3 text-xs text-ink/60">
+            <Lock className="h-4 w-4 shrink-0 text-navy" />
+            <span>
+              الاسم والبيانات الرسمية مقفلة بعد التوثيق ولا يمكن تعديلها ذاتياً.
+              يمكنك فقط تعديل أو إضافة روابط حساباتك الشخصية.
+            </span>
+          </div>
+        </div>
+      </section>
+
+      {/* ===== Latest articles ===== */}
+      <section className="mt-8">
+        <div className="flex flex-col gap-4 border-b-2 border-navy pb-4 sm:flex-row sm:items-end sm:justify-between">
+          <h2 className="text-2xl font-extrabold text-navy">آخر ما كتبه</h2>
+
+          {/* Filters — stacked & full-width on phones, inline on larger screens */}
+          <div className="grid w-full grid-cols-2 gap-2 sm:flex sm:w-auto sm:items-center">
+            <label className="flex items-center gap-1.5 rounded-lg bg-white px-3 py-2 text-sm ring-1 ring-gray-200 focus-within:ring-navy">
+              <CalendarDays className="h-4 w-4 shrink-0 text-navy" />
+              <span className="text-ink/50">من</span>
+              <input
+                type="date"
+                value={from}
+                onChange={(e) => setFrom(e.target.value)}
+                className="w-full min-w-0 bg-transparent text-ink/80 focus:outline-none"
+                aria-label="من تاريخ"
+              />
+            </label>
+            <label className="flex items-center gap-1.5 rounded-lg bg-white px-3 py-2 text-sm ring-1 ring-gray-200 focus-within:ring-navy">
+              <CalendarDays className="h-4 w-4 shrink-0 text-navy" />
+              <span className="text-ink/50">إلى</span>
+              <input
+                type="date"
+                value={to}
+                onChange={(e) => setTo(e.target.value)}
+                className="w-full min-w-0 bg-transparent text-ink/80 focus:outline-none"
+                aria-label="إلى تاريخ"
+              />
+            </label>
+            <select
+              value={category}
+              onChange={(e) => setCategory(e.target.value)}
+              className="col-span-2 rounded-lg bg-white px-3 py-2.5 text-sm text-ink/80 ring-1 ring-gray-200 focus:outline-none focus:ring-navy sm:col-span-1 sm:py-2"
+              aria-label="تصفية حسب التصنيف"
+            >
+              {categories.map((c) => (
+                <option key={c} value={c}>
+                  {c === 'all' ? 'كل التصنيفات' : c}
+                </option>
+              ))}
+            </select>
+          </div>
+        </div>
+
+        {articles.length === 0 ? (
+          <p className="py-12 text-center text-ink/50">
+            لا توجد مقالات ضمن النطاق المحدد.
+          </p>
+        ) : (
+          <div className="mt-6 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
+            {articles.map((a) => (
+              <article
+                key={a.id}
+                className="group overflow-hidden rounded-xl bg-white shadow-sm ring-1 ring-gray-100 transition hover:-translate-y-1 hover:shadow-md"
+              >
+                <div
+                  className={`relative h-40 bg-gradient-to-br ${a.cover}`}
+                >
+                  <span className="absolute right-3 top-3 rounded-full bg-white/90 px-2.5 py-1 text-[11px] font-bold text-navy">
+                    {a.category}
+                  </span>
+                </div>
+                <div className="p-4">
+                  <h3 className="line-clamp-2 min-h-[3rem] font-bold leading-7 text-navy transition group-hover:text-gold">
+                    {a.title}
+                  </h3>
+                  <div className="mt-3 flex items-center justify-between text-xs text-ink/50">
+                    <span className="flex items-center gap-1">
+                      <CalendarDays className="h-3.5 w-3.5" />
+                      {fmtDate(a.date)}
+                    </span>
+                    <span className="flex items-center gap-1">
+                      <Clock className="h-3.5 w-3.5" />
+                      {a.readMinutes} د قراءة
+                    </span>
+                  </div>
+                </div>
+              </article>
+            ))}
+          </div>
+        )}
+      </section>
+
+      {editing && (
+        <SocialEditor
+          socials={socials}
+          onSave={(next) => {
+            setSocials(next)
+            setEditing(false)
+          }}
+          onClose={() => setEditing(false)}
+        />
+      )}
+    </PortalLayout>
+  )
+}
+
+/** Modal for the guest to edit / add personal account links. */
+function SocialEditor({
+  socials,
+  onSave,
+  onClose,
+}: {
+  socials: SocialLink[]
+  onSave: (next: SocialLink[]) => void
+  onClose: () => void
+}) {
+  const [draft, setDraft] = useState<SocialLink[]>(socials)
+
+  const update = (id: string, patch: Partial<SocialLink>) =>
+    setDraft((d) => d.map((s) => (s.id === id ? { ...s, ...patch } : s)))
+
+  const remove = (id: string) =>
+    setDraft((d) => d.filter((s) => s.id !== id))
+
+  const add = () =>
+    setDraft((d) => [
+      ...d,
+      { id: `s${Date.now()}`, network: 'website', url: '' },
+    ])
+
+  return (
+    <div className="fixed inset-0 z-50 grid place-items-center bg-navy-deep/50 p-4 backdrop-blur-sm">
+      <div className="w-full max-w-lg rounded-2xl bg-white shadow-xl">
+        <div className="flex items-center justify-between border-b border-gray-100 px-6 py-4">
+          <h3 className="text-lg font-extrabold text-navy">
+            روابط الحسابات الشخصية
+          </h3>
+          <button
+            onClick={onClose}
+            className="grid h-9 w-9 place-items-center rounded-lg text-ink/50 transition hover:bg-sand"
+            aria-label="إغلاق"
+          >
+            <X className="h-5 w-5" />
+          </button>
+        </div>
+
+        <div className="max-h-[60vh] space-y-3 overflow-y-auto px-6 py-5">
+          {draft.length === 0 && (
+            <p className="py-6 text-center text-sm text-ink/50">
+              لم تتم إضافة أي روابط بعد.
+            </p>
+          )}
+          {draft.map((s) => (
+            <div key={s.id} className="flex items-center gap-2">
+              <select
+                value={s.network}
+                onChange={(e) =>
+                  update(s.id, {
+                    network: e.target.value as SocialLink['network'],
+                  })
+                }
+                className="rounded-lg bg-sand px-2.5 py-2 text-sm text-navy focus:outline-none"
+              >
+                {Object.keys(SOCIAL_LABELS).map((k) => (
+                  <option key={k} value={k}>
+                    {SOCIAL_LABELS[k]}
+                  </option>
+                ))}
+              </select>
+              <input
+                value={s.url}
+                onChange={(e) => update(s.id, { url: e.target.value })}
+                placeholder="https://"
+                className="ltr-field flex-1 rounded-lg border border-gray-200 px-3 py-2 text-sm focus:border-navy focus:outline-none"
+              />
+              <button
+                onClick={() => remove(s.id)}
+                className="grid h-9 w-9 shrink-0 place-items-center rounded-lg text-red-500 transition hover:bg-red-50"
+                aria-label="حذف"
+              >
+                <Trash2 className="h-4 w-4" />
+              </button>
+            </div>
+          ))}
+
+          <button
+            onClick={add}
+            className="flex w-full items-center justify-center gap-2 rounded-lg border-2 border-dashed border-navy/30 py-2.5 text-sm font-bold text-navy/70 transition hover:border-navy hover:text-navy"
+          >
+            <Plus className="h-4 w-4" /> إضافة رابط
+          </button>
+        </div>
+
+        <div className="flex justify-end gap-2 border-t border-gray-100 px-6 py-4">
+          <button
+            onClick={onClose}
+            className="rounded-lg px-4 py-2 text-sm font-bold text-ink/60 transition hover:bg-sand"
+          >
+            إلغاء
+          </button>
+          <button
+            onClick={() => onSave(draft.filter((s) => s.url.trim()))}
+            className="rounded-lg bg-navy px-5 py-2 text-sm font-bold text-white transition hover:bg-navy-light"
+          >
+            حفظ الروابط
+          </button>
+        </div>
+      </div>
     </div>
   )
 }
 
 export const Route = createFileRoute('/')({
-  component: Home,
+  component: ProfilePage,
 })

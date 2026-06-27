@@ -11,13 +11,48 @@
 // Import Routes
 
 import { Route as rootRoute } from './routes/__root'
+import { Route as VerificationImport } from './routes/verification'
+import { Route as FinancialImport } from './routes/financial'
+import { Route as AgreementsImport } from './routes/agreements'
+import { Route as AdminImport } from './routes/admin'
 import { Route as IndexImport } from './routes/index'
+import { Route as SectionSlugImport } from './routes/section.$slug'
 
 // Create/Update Routes
+
+const VerificationRoute = VerificationImport.update({
+  id: '/verification',
+  path: '/verification',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const FinancialRoute = FinancialImport.update({
+  id: '/financial',
+  path: '/financial',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const AgreementsRoute = AgreementsImport.update({
+  id: '/agreements',
+  path: '/agreements',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const AdminRoute = AdminImport.update({
+  id: '/admin',
+  path: '/admin',
+  getParentRoute: () => rootRoute,
+} as any)
 
 const IndexRoute = IndexImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const SectionSlugRoute = SectionSlugImport.update({
+  id: '/section/$slug',
+  path: '/section/$slug',
   getParentRoute: () => rootRoute,
 } as any)
 
@@ -32,6 +67,41 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexImport
       parentRoute: typeof rootRoute
     }
+    '/admin': {
+      id: '/admin'
+      path: '/admin'
+      fullPath: '/admin'
+      preLoaderRoute: typeof AdminImport
+      parentRoute: typeof rootRoute
+    }
+    '/agreements': {
+      id: '/agreements'
+      path: '/agreements'
+      fullPath: '/agreements'
+      preLoaderRoute: typeof AgreementsImport
+      parentRoute: typeof rootRoute
+    }
+    '/financial': {
+      id: '/financial'
+      path: '/financial'
+      fullPath: '/financial'
+      preLoaderRoute: typeof FinancialImport
+      parentRoute: typeof rootRoute
+    }
+    '/verification': {
+      id: '/verification'
+      path: '/verification'
+      fullPath: '/verification'
+      preLoaderRoute: typeof VerificationImport
+      parentRoute: typeof rootRoute
+    }
+    '/section/$slug': {
+      id: '/section/$slug'
+      path: '/section/$slug'
+      fullPath: '/section/$slug'
+      preLoaderRoute: typeof SectionSlugImport
+      parentRoute: typeof rootRoute
+    }
   }
 }
 
@@ -39,32 +109,76 @@ declare module '@tanstack/react-router' {
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/admin': typeof AdminRoute
+  '/agreements': typeof AgreementsRoute
+  '/financial': typeof FinancialRoute
+  '/verification': typeof VerificationRoute
+  '/section/$slug': typeof SectionSlugRoute
 }
 
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/admin': typeof AdminRoute
+  '/agreements': typeof AgreementsRoute
+  '/financial': typeof FinancialRoute
+  '/verification': typeof VerificationRoute
+  '/section/$slug': typeof SectionSlugRoute
 }
 
 export interface FileRoutesById {
   __root__: typeof rootRoute
   '/': typeof IndexRoute
+  '/admin': typeof AdminRoute
+  '/agreements': typeof AgreementsRoute
+  '/financial': typeof FinancialRoute
+  '/verification': typeof VerificationRoute
+  '/section/$slug': typeof SectionSlugRoute
 }
 
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths:
+    | '/'
+    | '/admin'
+    | '/agreements'
+    | '/financial'
+    | '/verification'
+    | '/section/$slug'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to:
+    | '/'
+    | '/admin'
+    | '/agreements'
+    | '/financial'
+    | '/verification'
+    | '/section/$slug'
+  id:
+    | '__root__'
+    | '/'
+    | '/admin'
+    | '/agreements'
+    | '/financial'
+    | '/verification'
+    | '/section/$slug'
   fileRoutesById: FileRoutesById
 }
 
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AdminRoute: typeof AdminRoute
+  AgreementsRoute: typeof AgreementsRoute
+  FinancialRoute: typeof FinancialRoute
+  VerificationRoute: typeof VerificationRoute
+  SectionSlugRoute: typeof SectionSlugRoute
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AdminRoute: AdminRoute,
+  AgreementsRoute: AgreementsRoute,
+  FinancialRoute: FinancialRoute,
+  VerificationRoute: VerificationRoute,
+  SectionSlugRoute: SectionSlugRoute,
 }
 
 export const routeTree = rootRoute
@@ -77,11 +191,31 @@ export const routeTree = rootRoute
     "__root__": {
       "filePath": "__root.tsx",
       "children": [
-        "/"
+        "/",
+        "/admin",
+        "/agreements",
+        "/financial",
+        "/verification",
+        "/section/$slug"
       ]
     },
     "/": {
       "filePath": "index.tsx"
+    },
+    "/admin": {
+      "filePath": "admin.tsx"
+    },
+    "/agreements": {
+      "filePath": "agreements.tsx"
+    },
+    "/financial": {
+      "filePath": "financial.tsx"
+    },
+    "/verification": {
+      "filePath": "verification.tsx"
+    },
+    "/section/$slug": {
+      "filePath": "section.$slug.tsx"
     }
   }
 }
