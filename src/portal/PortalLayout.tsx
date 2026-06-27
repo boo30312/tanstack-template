@@ -44,14 +44,16 @@ export function PageTitle({
     <div className="mb-6">
       <div className="flex items-center gap-3">
         {icon && (
-          <span className="grid h-11 w-11 place-items-center rounded-xl bg-navy text-white">
+          <span className="grid h-10 w-10 shrink-0 place-items-center rounded-xl bg-navy text-white sm:h-11 sm:w-11">
             {icon}
           </span>
         )}
-        <div>
-          <h1 className="text-2xl font-extrabold text-navy">{title}</h1>
+        <div className="min-w-0">
+          <h1 className="text-xl font-extrabold leading-tight text-navy sm:text-2xl">
+            {title}
+          </h1>
           {subtitle && (
-            <p className="text-sm text-ink/60">{subtitle}</p>
+            <p className="mt-0.5 text-[13px] text-ink/60 sm:text-sm">{subtitle}</p>
           )}
         </div>
       </div>

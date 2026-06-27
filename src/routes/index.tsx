@@ -87,8 +87,8 @@ function ProfilePage() {
             </div>
 
             {/* Avatar */}
-            <div className="order-1 -mt-16 sm:order-2 sm:-mt-20">
-              <div className="grid h-32 w-32 place-items-center overflow-hidden rounded-full bg-gradient-to-br from-navy-light to-gold text-4xl font-extrabold text-white ring-4 ring-white sm:h-36 sm:w-36">
+            <div className="order-1 -mt-14 sm:order-2 sm:-mt-20">
+              <div className="grid h-28 w-28 place-items-center overflow-hidden rounded-full bg-gradient-to-br from-navy-light to-gold text-3xl font-extrabold text-white ring-4 ring-white sm:h-36 sm:w-36 sm:text-4xl">
                 أأ
               </div>
             </div>
@@ -96,16 +96,18 @@ function ProfilePage() {
 
           {/* Name + role */}
           <div className="mt-4 text-center sm:text-right">
-            <h1 className="flex flex-wrap items-center justify-center gap-2 text-3xl font-extrabold text-navy sm:justify-start">
-              {CONTRIBUTOR.nameAr}
-              <span className="text-navy-light">- {CONTRIBUTOR.nameEn}</span>
+            <div className="flex flex-col items-center gap-x-3 gap-y-2 sm:flex-row sm:flex-wrap sm:items-center sm:justify-start">
+              <h1 className="text-2xl font-extrabold leading-tight text-navy sm:text-3xl">
+                {CONTRIBUTOR.nameAr}
+                <span className="text-navy-light"> — {CONTRIBUTOR.nameEn}</span>
+              </h1>
               {CONTRIBUTOR.status === 'verified' && (
-                <span className="inline-flex items-center gap-1 rounded-full bg-emerald-50 px-2.5 py-1 text-xs font-bold text-emerald-700 ring-1 ring-emerald-200">
+                <span className="inline-flex w-fit items-center gap-1 rounded-full bg-emerald-50 px-2.5 py-1 text-xs font-bold text-emerald-700 ring-1 ring-emerald-200">
                   <BadgeCheck className="h-4 w-4" /> موثّق
                 </span>
               )}
-            </h1>
-            <p className="mt-1 text-gold">{CONTRIBUTOR.roleAr}</p>
+            </div>
+            <p className="mt-1.5 text-gold">{CONTRIBUTOR.roleAr}</p>
             <p className="mx-auto mt-3 max-w-3xl text-sm leading-7 text-ink/70 sm:mx-0">
               {CONTRIBUTOR.bioAr}
             </p>
@@ -124,37 +126,36 @@ function ProfilePage() {
       {/* ===== Latest articles ===== */}
       <section className="mt-8">
         <div className="flex flex-col gap-4 border-b-2 border-navy pb-4 sm:flex-row sm:items-end sm:justify-between">
-          <h2 className="order-2 text-2xl font-extrabold text-navy sm:order-1">
-            آخر ما كتبه
-          </h2>
+          <h2 className="text-2xl font-extrabold text-navy">آخر ما كتبه</h2>
 
-          {/* Filters */}
-          <div className="order-1 flex flex-wrap items-center gap-2 sm:order-2">
-            <div className="flex items-center gap-1.5 rounded-lg bg-white px-3 py-2 text-sm ring-1 ring-gray-200">
-              <CalendarDays className="h-4 w-4 text-navy" />
+          {/* Filters — stacked & full-width on phones, inline on larger screens */}
+          <div className="grid w-full grid-cols-2 gap-2 sm:flex sm:w-auto sm:items-center">
+            <label className="flex items-center gap-1.5 rounded-lg bg-white px-3 py-2 text-sm ring-1 ring-gray-200 focus-within:ring-navy">
+              <CalendarDays className="h-4 w-4 shrink-0 text-navy" />
+              <span className="text-ink/50">من</span>
               <input
                 type="date"
                 value={from}
                 onChange={(e) => setFrom(e.target.value)}
-                className="bg-transparent text-ink/80 focus:outline-none"
+                className="w-full min-w-0 bg-transparent text-ink/80 focus:outline-none"
                 aria-label="من تاريخ"
               />
-            </div>
-            <span className="text-ink/50">إلى</span>
-            <div className="flex items-center gap-1.5 rounded-lg bg-white px-3 py-2 text-sm ring-1 ring-gray-200">
-              <CalendarDays className="h-4 w-4 text-navy" />
+            </label>
+            <label className="flex items-center gap-1.5 rounded-lg bg-white px-3 py-2 text-sm ring-1 ring-gray-200 focus-within:ring-navy">
+              <CalendarDays className="h-4 w-4 shrink-0 text-navy" />
+              <span className="text-ink/50">إلى</span>
               <input
                 type="date"
                 value={to}
                 onChange={(e) => setTo(e.target.value)}
-                className="bg-transparent text-ink/80 focus:outline-none"
+                className="w-full min-w-0 bg-transparent text-ink/80 focus:outline-none"
                 aria-label="إلى تاريخ"
               />
-            </div>
+            </label>
             <select
               value={category}
               onChange={(e) => setCategory(e.target.value)}
-              className="rounded-lg bg-white px-3 py-2 text-sm text-ink/80 ring-1 ring-gray-200 focus:outline-none"
+              className="col-span-2 rounded-lg bg-white px-3 py-2.5 text-sm text-ink/80 ring-1 ring-gray-200 focus:outline-none focus:ring-navy sm:col-span-1 sm:py-2"
               aria-label="تصفية حسب التصنيف"
             >
               {categories.map((c) => (
