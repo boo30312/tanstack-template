@@ -1,6 +1,6 @@
-import { createFileRoute } from '@tanstack/react-router'
+import { createFileRoute, Link } from '@tanstack/react-router'
 import { useEffect, useState, useRef, useCallback, useMemo } from 'react'
-import { Settings } from 'lucide-react'
+import { LayoutDashboard, Settings } from 'lucide-react'
 import {
   SettingsDialog,
   ChatMessage,
@@ -297,7 +297,14 @@ function Home() {
   return (
     <div className="relative flex h-screen bg-gray-900">
       {/* Settings Button */}
-      <div className="absolute z-50 top-5 right-5">
+      <div className="absolute z-50 flex items-center gap-2 top-5 right-5">
+        <Link
+          to="/portal"
+          className="flex items-center gap-2 h-10 px-4 text-sm font-medium text-white transition-opacity rounded-full bg-indigo-600 hover:opacity-90 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+        >
+          <LayoutDashboard className="w-4 h-4" />
+          Contributors Portal
+        </Link>
         <button
           onClick={() => setIsSettingsOpen(true)}
           className="flex items-center justify-center w-10 h-10 text-white transition-opacity rounded-full bg-gradient-to-r from-orange-500 to-red-600 hover:opacity-90 focus:outline-none focus:ring-2 focus:ring-orange-500"
