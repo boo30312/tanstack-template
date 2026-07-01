@@ -11,14 +11,63 @@
 // Import Routes
 
 import { Route as rootRoute } from './routes/__root'
+import { Route as PortalRouteImport } from './routes/portal/route'
 import { Route as IndexImport } from './routes/index'
+import { Route as PortalIndexImport } from './routes/portal/index'
+import { Route as PortalVerificationImport } from './routes/portal/verification'
+import { Route as PortalFinancialImport } from './routes/portal/financial'
+import { Route as PortalContributorsImport } from './routes/portal/contributors'
+import { Route as PortalCommunicationImport } from './routes/portal/communication'
+import { Route as PortalAnalyticsImport } from './routes/portal/analytics'
 
 // Create/Update Routes
+
+const PortalRouteRoute = PortalRouteImport.update({
+  id: '/portal',
+  path: '/portal',
+  getParentRoute: () => rootRoute,
+} as any)
 
 const IndexRoute = IndexImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRoute,
+} as any)
+
+const PortalIndexRoute = PortalIndexImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => PortalRouteRoute,
+} as any)
+
+const PortalVerificationRoute = PortalVerificationImport.update({
+  id: '/verification',
+  path: '/verification',
+  getParentRoute: () => PortalRouteRoute,
+} as any)
+
+const PortalFinancialRoute = PortalFinancialImport.update({
+  id: '/financial',
+  path: '/financial',
+  getParentRoute: () => PortalRouteRoute,
+} as any)
+
+const PortalContributorsRoute = PortalContributorsImport.update({
+  id: '/contributors',
+  path: '/contributors',
+  getParentRoute: () => PortalRouteRoute,
+} as any)
+
+const PortalCommunicationRoute = PortalCommunicationImport.update({
+  id: '/communication',
+  path: '/communication',
+  getParentRoute: () => PortalRouteRoute,
+} as any)
+
+const PortalAnalyticsRoute = PortalAnalyticsImport.update({
+  id: '/analytics',
+  path: '/analytics',
+  getParentRoute: () => PortalRouteRoute,
 } as any)
 
 // Populate the FileRoutesByPath interface
@@ -32,39 +81,156 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexImport
       parentRoute: typeof rootRoute
     }
+    '/portal': {
+      id: '/portal'
+      path: '/portal'
+      fullPath: '/portal'
+      preLoaderRoute: typeof PortalRouteImport
+      parentRoute: typeof rootRoute
+    }
+    '/portal/analytics': {
+      id: '/portal/analytics'
+      path: '/analytics'
+      fullPath: '/portal/analytics'
+      preLoaderRoute: typeof PortalAnalyticsImport
+      parentRoute: typeof PortalRouteImport
+    }
+    '/portal/communication': {
+      id: '/portal/communication'
+      path: '/communication'
+      fullPath: '/portal/communication'
+      preLoaderRoute: typeof PortalCommunicationImport
+      parentRoute: typeof PortalRouteImport
+    }
+    '/portal/contributors': {
+      id: '/portal/contributors'
+      path: '/contributors'
+      fullPath: '/portal/contributors'
+      preLoaderRoute: typeof PortalContributorsImport
+      parentRoute: typeof PortalRouteImport
+    }
+    '/portal/financial': {
+      id: '/portal/financial'
+      path: '/financial'
+      fullPath: '/portal/financial'
+      preLoaderRoute: typeof PortalFinancialImport
+      parentRoute: typeof PortalRouteImport
+    }
+    '/portal/verification': {
+      id: '/portal/verification'
+      path: '/verification'
+      fullPath: '/portal/verification'
+      preLoaderRoute: typeof PortalVerificationImport
+      parentRoute: typeof PortalRouteImport
+    }
+    '/portal/': {
+      id: '/portal/'
+      path: '/'
+      fullPath: '/portal/'
+      preLoaderRoute: typeof PortalIndexImport
+      parentRoute: typeof PortalRouteImport
+    }
   }
 }
 
 // Create and export the route tree
 
+interface PortalRouteRouteChildren {
+  PortalAnalyticsRoute: typeof PortalAnalyticsRoute
+  PortalCommunicationRoute: typeof PortalCommunicationRoute
+  PortalContributorsRoute: typeof PortalContributorsRoute
+  PortalFinancialRoute: typeof PortalFinancialRoute
+  PortalVerificationRoute: typeof PortalVerificationRoute
+  PortalIndexRoute: typeof PortalIndexRoute
+}
+
+const PortalRouteRouteChildren: PortalRouteRouteChildren = {
+  PortalAnalyticsRoute: PortalAnalyticsRoute,
+  PortalCommunicationRoute: PortalCommunicationRoute,
+  PortalContributorsRoute: PortalContributorsRoute,
+  PortalFinancialRoute: PortalFinancialRoute,
+  PortalVerificationRoute: PortalVerificationRoute,
+  PortalIndexRoute: PortalIndexRoute,
+}
+
+const PortalRouteRouteWithChildren = PortalRouteRoute._addFileChildren(
+  PortalRouteRouteChildren,
+)
+
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/portal': typeof PortalRouteRouteWithChildren
+  '/portal/analytics': typeof PortalAnalyticsRoute
+  '/portal/communication': typeof PortalCommunicationRoute
+  '/portal/contributors': typeof PortalContributorsRoute
+  '/portal/financial': typeof PortalFinancialRoute
+  '/portal/verification': typeof PortalVerificationRoute
+  '/portal/': typeof PortalIndexRoute
 }
 
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/portal/analytics': typeof PortalAnalyticsRoute
+  '/portal/communication': typeof PortalCommunicationRoute
+  '/portal/contributors': typeof PortalContributorsRoute
+  '/portal/financial': typeof PortalFinancialRoute
+  '/portal/verification': typeof PortalVerificationRoute
+  '/portal': typeof PortalIndexRoute
 }
 
 export interface FileRoutesById {
   __root__: typeof rootRoute
   '/': typeof IndexRoute
+  '/portal': typeof PortalRouteRouteWithChildren
+  '/portal/analytics': typeof PortalAnalyticsRoute
+  '/portal/communication': typeof PortalCommunicationRoute
+  '/portal/contributors': typeof PortalContributorsRoute
+  '/portal/financial': typeof PortalFinancialRoute
+  '/portal/verification': typeof PortalVerificationRoute
+  '/portal/': typeof PortalIndexRoute
 }
 
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths:
+    | '/'
+    | '/portal'
+    | '/portal/analytics'
+    | '/portal/communication'
+    | '/portal/contributors'
+    | '/portal/financial'
+    | '/portal/verification'
+    | '/portal/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to:
+    | '/'
+    | '/portal/analytics'
+    | '/portal/communication'
+    | '/portal/contributors'
+    | '/portal/financial'
+    | '/portal/verification'
+    | '/portal'
+  id:
+    | '__root__'
+    | '/'
+    | '/portal'
+    | '/portal/analytics'
+    | '/portal/communication'
+    | '/portal/contributors'
+    | '/portal/financial'
+    | '/portal/verification'
+    | '/portal/'
   fileRoutesById: FileRoutesById
 }
 
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  PortalRouteRoute: typeof PortalRouteRouteWithChildren
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  PortalRouteRoute: PortalRouteRouteWithChildren,
 }
 
 export const routeTree = rootRoute
@@ -77,11 +243,47 @@ export const routeTree = rootRoute
     "__root__": {
       "filePath": "__root.tsx",
       "children": [
-        "/"
+        "/",
+        "/portal"
       ]
     },
     "/": {
       "filePath": "index.tsx"
+    },
+    "/portal": {
+      "filePath": "portal/route.tsx",
+      "children": [
+        "/portal/analytics",
+        "/portal/communication",
+        "/portal/contributors",
+        "/portal/financial",
+        "/portal/verification",
+        "/portal/"
+      ]
+    },
+    "/portal/analytics": {
+      "filePath": "portal/analytics.tsx",
+      "parent": "/portal"
+    },
+    "/portal/communication": {
+      "filePath": "portal/communication.tsx",
+      "parent": "/portal"
+    },
+    "/portal/contributors": {
+      "filePath": "portal/contributors.tsx",
+      "parent": "/portal"
+    },
+    "/portal/financial": {
+      "filePath": "portal/financial.tsx",
+      "parent": "/portal"
+    },
+    "/portal/verification": {
+      "filePath": "portal/verification.tsx",
+      "parent": "/portal"
+    },
+    "/portal/": {
+      "filePath": "portal/index.tsx",
+      "parent": "/portal"
     }
   }
 }
