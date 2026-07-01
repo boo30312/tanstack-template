@@ -11,9 +11,86 @@
 // Import Routes
 
 import { Route as rootRoute } from './routes/__root'
+import { Route as WorkflowEngineImport } from './routes/workflow-engine'
+import { Route as WhatsappImport } from './routes/whatsapp'
+import { Route as TvAppearancesImport } from './routes/tv-appearances'
+import { Route as SettingsImport } from './routes/settings'
+import { Route as ReportsImport } from './routes/reports'
+import { Route as FinanceImport } from './routes/finance'
+import { Route as EditorialImport } from './routes/editorial'
+import { Route as DocumentsImport } from './routes/documents'
+import { Route as DataCenterImport } from './routes/data-center'
+import { Route as ContractsImport } from './routes/contracts'
+import { Route as BeneficiariesImport } from './routes/beneficiaries'
 import { Route as IndexImport } from './routes/index'
 
 // Create/Update Routes
+
+const WorkflowEngineRoute = WorkflowEngineImport.update({
+  id: '/workflow-engine',
+  path: '/workflow-engine',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const WhatsappRoute = WhatsappImport.update({
+  id: '/whatsapp',
+  path: '/whatsapp',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const TvAppearancesRoute = TvAppearancesImport.update({
+  id: '/tv-appearances',
+  path: '/tv-appearances',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const SettingsRoute = SettingsImport.update({
+  id: '/settings',
+  path: '/settings',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const ReportsRoute = ReportsImport.update({
+  id: '/reports',
+  path: '/reports',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const FinanceRoute = FinanceImport.update({
+  id: '/finance',
+  path: '/finance',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const EditorialRoute = EditorialImport.update({
+  id: '/editorial',
+  path: '/editorial',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const DocumentsRoute = DocumentsImport.update({
+  id: '/documents',
+  path: '/documents',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const DataCenterRoute = DataCenterImport.update({
+  id: '/data-center',
+  path: '/data-center',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const ContractsRoute = ContractsImport.update({
+  id: '/contracts',
+  path: '/contracts',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const BeneficiariesRoute = BeneficiariesImport.update({
+  id: '/beneficiaries',
+  path: '/beneficiaries',
+  getParentRoute: () => rootRoute,
+} as any)
 
 const IndexRoute = IndexImport.update({
   id: '/',
@@ -32,6 +109,83 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexImport
       parentRoute: typeof rootRoute
     }
+    '/beneficiaries': {
+      id: '/beneficiaries'
+      path: '/beneficiaries'
+      fullPath: '/beneficiaries'
+      preLoaderRoute: typeof BeneficiariesImport
+      parentRoute: typeof rootRoute
+    }
+    '/contracts': {
+      id: '/contracts'
+      path: '/contracts'
+      fullPath: '/contracts'
+      preLoaderRoute: typeof ContractsImport
+      parentRoute: typeof rootRoute
+    }
+    '/data-center': {
+      id: '/data-center'
+      path: '/data-center'
+      fullPath: '/data-center'
+      preLoaderRoute: typeof DataCenterImport
+      parentRoute: typeof rootRoute
+    }
+    '/documents': {
+      id: '/documents'
+      path: '/documents'
+      fullPath: '/documents'
+      preLoaderRoute: typeof DocumentsImport
+      parentRoute: typeof rootRoute
+    }
+    '/editorial': {
+      id: '/editorial'
+      path: '/editorial'
+      fullPath: '/editorial'
+      preLoaderRoute: typeof EditorialImport
+      parentRoute: typeof rootRoute
+    }
+    '/finance': {
+      id: '/finance'
+      path: '/finance'
+      fullPath: '/finance'
+      preLoaderRoute: typeof FinanceImport
+      parentRoute: typeof rootRoute
+    }
+    '/reports': {
+      id: '/reports'
+      path: '/reports'
+      fullPath: '/reports'
+      preLoaderRoute: typeof ReportsImport
+      parentRoute: typeof rootRoute
+    }
+    '/settings': {
+      id: '/settings'
+      path: '/settings'
+      fullPath: '/settings'
+      preLoaderRoute: typeof SettingsImport
+      parentRoute: typeof rootRoute
+    }
+    '/tv-appearances': {
+      id: '/tv-appearances'
+      path: '/tv-appearances'
+      fullPath: '/tv-appearances'
+      preLoaderRoute: typeof TvAppearancesImport
+      parentRoute: typeof rootRoute
+    }
+    '/whatsapp': {
+      id: '/whatsapp'
+      path: '/whatsapp'
+      fullPath: '/whatsapp'
+      preLoaderRoute: typeof WhatsappImport
+      parentRoute: typeof rootRoute
+    }
+    '/workflow-engine': {
+      id: '/workflow-engine'
+      path: '/workflow-engine'
+      fullPath: '/workflow-engine'
+      preLoaderRoute: typeof WorkflowEngineImport
+      parentRoute: typeof rootRoute
+    }
   }
 }
 
@@ -39,32 +193,124 @@ declare module '@tanstack/react-router' {
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/beneficiaries': typeof BeneficiariesRoute
+  '/contracts': typeof ContractsRoute
+  '/data-center': typeof DataCenterRoute
+  '/documents': typeof DocumentsRoute
+  '/editorial': typeof EditorialRoute
+  '/finance': typeof FinanceRoute
+  '/reports': typeof ReportsRoute
+  '/settings': typeof SettingsRoute
+  '/tv-appearances': typeof TvAppearancesRoute
+  '/whatsapp': typeof WhatsappRoute
+  '/workflow-engine': typeof WorkflowEngineRoute
 }
 
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/beneficiaries': typeof BeneficiariesRoute
+  '/contracts': typeof ContractsRoute
+  '/data-center': typeof DataCenterRoute
+  '/documents': typeof DocumentsRoute
+  '/editorial': typeof EditorialRoute
+  '/finance': typeof FinanceRoute
+  '/reports': typeof ReportsRoute
+  '/settings': typeof SettingsRoute
+  '/tv-appearances': typeof TvAppearancesRoute
+  '/whatsapp': typeof WhatsappRoute
+  '/workflow-engine': typeof WorkflowEngineRoute
 }
 
 export interface FileRoutesById {
   __root__: typeof rootRoute
   '/': typeof IndexRoute
+  '/beneficiaries': typeof BeneficiariesRoute
+  '/contracts': typeof ContractsRoute
+  '/data-center': typeof DataCenterRoute
+  '/documents': typeof DocumentsRoute
+  '/editorial': typeof EditorialRoute
+  '/finance': typeof FinanceRoute
+  '/reports': typeof ReportsRoute
+  '/settings': typeof SettingsRoute
+  '/tv-appearances': typeof TvAppearancesRoute
+  '/whatsapp': typeof WhatsappRoute
+  '/workflow-engine': typeof WorkflowEngineRoute
 }
 
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths:
+    | '/'
+    | '/beneficiaries'
+    | '/contracts'
+    | '/data-center'
+    | '/documents'
+    | '/editorial'
+    | '/finance'
+    | '/reports'
+    | '/settings'
+    | '/tv-appearances'
+    | '/whatsapp'
+    | '/workflow-engine'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to:
+    | '/'
+    | '/beneficiaries'
+    | '/contracts'
+    | '/data-center'
+    | '/documents'
+    | '/editorial'
+    | '/finance'
+    | '/reports'
+    | '/settings'
+    | '/tv-appearances'
+    | '/whatsapp'
+    | '/workflow-engine'
+  id:
+    | '__root__'
+    | '/'
+    | '/beneficiaries'
+    | '/contracts'
+    | '/data-center'
+    | '/documents'
+    | '/editorial'
+    | '/finance'
+    | '/reports'
+    | '/settings'
+    | '/tv-appearances'
+    | '/whatsapp'
+    | '/workflow-engine'
   fileRoutesById: FileRoutesById
 }
 
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  BeneficiariesRoute: typeof BeneficiariesRoute
+  ContractsRoute: typeof ContractsRoute
+  DataCenterRoute: typeof DataCenterRoute
+  DocumentsRoute: typeof DocumentsRoute
+  EditorialRoute: typeof EditorialRoute
+  FinanceRoute: typeof FinanceRoute
+  ReportsRoute: typeof ReportsRoute
+  SettingsRoute: typeof SettingsRoute
+  TvAppearancesRoute: typeof TvAppearancesRoute
+  WhatsappRoute: typeof WhatsappRoute
+  WorkflowEngineRoute: typeof WorkflowEngineRoute
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  BeneficiariesRoute: BeneficiariesRoute,
+  ContractsRoute: ContractsRoute,
+  DataCenterRoute: DataCenterRoute,
+  DocumentsRoute: DocumentsRoute,
+  EditorialRoute: EditorialRoute,
+  FinanceRoute: FinanceRoute,
+  ReportsRoute: ReportsRoute,
+  SettingsRoute: SettingsRoute,
+  TvAppearancesRoute: TvAppearancesRoute,
+  WhatsappRoute: WhatsappRoute,
+  WorkflowEngineRoute: WorkflowEngineRoute,
 }
 
 export const routeTree = rootRoute
@@ -77,11 +323,55 @@ export const routeTree = rootRoute
     "__root__": {
       "filePath": "__root.tsx",
       "children": [
-        "/"
+        "/",
+        "/beneficiaries",
+        "/contracts",
+        "/data-center",
+        "/documents",
+        "/editorial",
+        "/finance",
+        "/reports",
+        "/settings",
+        "/tv-appearances",
+        "/whatsapp",
+        "/workflow-engine"
       ]
     },
     "/": {
       "filePath": "index.tsx"
+    },
+    "/beneficiaries": {
+      "filePath": "beneficiaries.tsx"
+    },
+    "/contracts": {
+      "filePath": "contracts.tsx"
+    },
+    "/data-center": {
+      "filePath": "data-center.tsx"
+    },
+    "/documents": {
+      "filePath": "documents.tsx"
+    },
+    "/editorial": {
+      "filePath": "editorial.tsx"
+    },
+    "/finance": {
+      "filePath": "finance.tsx"
+    },
+    "/reports": {
+      "filePath": "reports.tsx"
+    },
+    "/settings": {
+      "filePath": "settings.tsx"
+    },
+    "/tv-appearances": {
+      "filePath": "tv-appearances.tsx"
+    },
+    "/whatsapp": {
+      "filePath": "whatsapp.tsx"
+    },
+    "/workflow-engine": {
+      "filePath": "workflow-engine.tsx"
     }
   }
 }
