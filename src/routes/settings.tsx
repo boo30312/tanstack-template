@@ -2,10 +2,10 @@ import { createFileRoute } from '@tanstack/react-router'
 import { SectionPage } from '../components/platform/SectionPage'
 import { getSection } from '../components/platform/navigation'
 
-function DashboardPage() {
-  return <SectionPage section={getSection('/')} />
+function SettingsPage() {
+  return <SectionPage section={getSection('/settings')} />
 }
 
-export const Route = createFileRoute('/')({
-  component: DashboardPage,
+export const Route = createFileRoute('/settings')({
+  component: SettingsPage,
 })

@@ -6,6 +6,7 @@ import {
 } from '@tanstack/react-router'
 import { TanStackRouterDevtools } from '@tanstack/router-devtools'
 import { ConvexClientProvider } from '../convex'
+import { AppShell } from '../components/platform/AppShell'
 
 import appCss from '../styles.css?url'
 
@@ -20,7 +21,7 @@ export const Route = createRootRoute({
         content: 'width=device-width, initial-scale=1',
       },
       {
-        title: 'TanStack Chat Starter',
+        title: 'منصة إدارة المستفيدين - تلفزيون سوريا',
       },
     ],
     links: [
@@ -33,7 +34,9 @@ export const Route = createRootRoute({
 
   component: () => (
     <RootDocument>
-      <Outlet />
+      <AppShell>
+        <Outlet />
+      </AppShell>
       <TanStackRouterDevtools />
     </RootDocument>
   ),
@@ -41,14 +44,12 @@ export const Route = createRootRoute({
 
 function RootDocument({ children }: { children: React.ReactNode }) {
   return (
-    <html>
+    <html lang="ar" dir="rtl">
       <head>
         <HeadContent />
       </head>
       <body>
-        <ConvexClientProvider>
-          {children}
-        </ConvexClientProvider>
+        <ConvexClientProvider>{children}</ConvexClientProvider>
         <Scripts />
       </body>
     </html>

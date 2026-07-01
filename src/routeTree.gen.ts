@@ -11,9 +11,79 @@
 // Import Routes
 
 import { Route as rootRoute } from './routes/__root'
+import { Route as WhatsappImport } from './routes/whatsapp'
+import { Route as TvAppearancesImport } from './routes/tv-appearances'
+import { Route as SettingsImport } from './routes/settings'
+import { Route as ReportsImport } from './routes/reports'
+import { Route as ReconciliationImport } from './routes/reconciliation'
+import { Route as FinanceImport } from './routes/finance'
+import { Route as EditorialImport } from './routes/editorial'
+import { Route as DataCenterImport } from './routes/data-center'
+import { Route as ContractsImport } from './routes/contracts'
+import { Route as BeneficiariesImport } from './routes/beneficiaries'
 import { Route as IndexImport } from './routes/index'
 
 // Create/Update Routes
+
+const WhatsappRoute = WhatsappImport.update({
+  id: '/whatsapp',
+  path: '/whatsapp',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const TvAppearancesRoute = TvAppearancesImport.update({
+  id: '/tv-appearances',
+  path: '/tv-appearances',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const SettingsRoute = SettingsImport.update({
+  id: '/settings',
+  path: '/settings',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const ReportsRoute = ReportsImport.update({
+  id: '/reports',
+  path: '/reports',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const ReconciliationRoute = ReconciliationImport.update({
+  id: '/reconciliation',
+  path: '/reconciliation',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const FinanceRoute = FinanceImport.update({
+  id: '/finance',
+  path: '/finance',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const EditorialRoute = EditorialImport.update({
+  id: '/editorial',
+  path: '/editorial',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const DataCenterRoute = DataCenterImport.update({
+  id: '/data-center',
+  path: '/data-center',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const ContractsRoute = ContractsImport.update({
+  id: '/contracts',
+  path: '/contracts',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const BeneficiariesRoute = BeneficiariesImport.update({
+  id: '/beneficiaries',
+  path: '/beneficiaries',
+  getParentRoute: () => rootRoute,
+} as any)
 
 const IndexRoute = IndexImport.update({
   id: '/',
@@ -32,6 +102,76 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexImport
       parentRoute: typeof rootRoute
     }
+    '/beneficiaries': {
+      id: '/beneficiaries'
+      path: '/beneficiaries'
+      fullPath: '/beneficiaries'
+      preLoaderRoute: typeof BeneficiariesImport
+      parentRoute: typeof rootRoute
+    }
+    '/contracts': {
+      id: '/contracts'
+      path: '/contracts'
+      fullPath: '/contracts'
+      preLoaderRoute: typeof ContractsImport
+      parentRoute: typeof rootRoute
+    }
+    '/data-center': {
+      id: '/data-center'
+      path: '/data-center'
+      fullPath: '/data-center'
+      preLoaderRoute: typeof DataCenterImport
+      parentRoute: typeof rootRoute
+    }
+    '/editorial': {
+      id: '/editorial'
+      path: '/editorial'
+      fullPath: '/editorial'
+      preLoaderRoute: typeof EditorialImport
+      parentRoute: typeof rootRoute
+    }
+    '/finance': {
+      id: '/finance'
+      path: '/finance'
+      fullPath: '/finance'
+      preLoaderRoute: typeof FinanceImport
+      parentRoute: typeof rootRoute
+    }
+    '/reconciliation': {
+      id: '/reconciliation'
+      path: '/reconciliation'
+      fullPath: '/reconciliation'
+      preLoaderRoute: typeof ReconciliationImport
+      parentRoute: typeof rootRoute
+    }
+    '/reports': {
+      id: '/reports'
+      path: '/reports'
+      fullPath: '/reports'
+      preLoaderRoute: typeof ReportsImport
+      parentRoute: typeof rootRoute
+    }
+    '/settings': {
+      id: '/settings'
+      path: '/settings'
+      fullPath: '/settings'
+      preLoaderRoute: typeof SettingsImport
+      parentRoute: typeof rootRoute
+    }
+    '/tv-appearances': {
+      id: '/tv-appearances'
+      path: '/tv-appearances'
+      fullPath: '/tv-appearances'
+      preLoaderRoute: typeof TvAppearancesImport
+      parentRoute: typeof rootRoute
+    }
+    '/whatsapp': {
+      id: '/whatsapp'
+      path: '/whatsapp'
+      fullPath: '/whatsapp'
+      preLoaderRoute: typeof WhatsappImport
+      parentRoute: typeof rootRoute
+    }
   }
 }
 
@@ -39,32 +179,116 @@ declare module '@tanstack/react-router' {
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/beneficiaries': typeof BeneficiariesRoute
+  '/contracts': typeof ContractsRoute
+  '/data-center': typeof DataCenterRoute
+  '/editorial': typeof EditorialRoute
+  '/finance': typeof FinanceRoute
+  '/reconciliation': typeof ReconciliationRoute
+  '/reports': typeof ReportsRoute
+  '/settings': typeof SettingsRoute
+  '/tv-appearances': typeof TvAppearancesRoute
+  '/whatsapp': typeof WhatsappRoute
 }
 
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/beneficiaries': typeof BeneficiariesRoute
+  '/contracts': typeof ContractsRoute
+  '/data-center': typeof DataCenterRoute
+  '/editorial': typeof EditorialRoute
+  '/finance': typeof FinanceRoute
+  '/reconciliation': typeof ReconciliationRoute
+  '/reports': typeof ReportsRoute
+  '/settings': typeof SettingsRoute
+  '/tv-appearances': typeof TvAppearancesRoute
+  '/whatsapp': typeof WhatsappRoute
 }
 
 export interface FileRoutesById {
   __root__: typeof rootRoute
   '/': typeof IndexRoute
+  '/beneficiaries': typeof BeneficiariesRoute
+  '/contracts': typeof ContractsRoute
+  '/data-center': typeof DataCenterRoute
+  '/editorial': typeof EditorialRoute
+  '/finance': typeof FinanceRoute
+  '/reconciliation': typeof ReconciliationRoute
+  '/reports': typeof ReportsRoute
+  '/settings': typeof SettingsRoute
+  '/tv-appearances': typeof TvAppearancesRoute
+  '/whatsapp': typeof WhatsappRoute
 }
 
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths:
+    | '/'
+    | '/beneficiaries'
+    | '/contracts'
+    | '/data-center'
+    | '/editorial'
+    | '/finance'
+    | '/reconciliation'
+    | '/reports'
+    | '/settings'
+    | '/tv-appearances'
+    | '/whatsapp'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to:
+    | '/'
+    | '/beneficiaries'
+    | '/contracts'
+    | '/data-center'
+    | '/editorial'
+    | '/finance'
+    | '/reconciliation'
+    | '/reports'
+    | '/settings'
+    | '/tv-appearances'
+    | '/whatsapp'
+  id:
+    | '__root__'
+    | '/'
+    | '/beneficiaries'
+    | '/contracts'
+    | '/data-center'
+    | '/editorial'
+    | '/finance'
+    | '/reconciliation'
+    | '/reports'
+    | '/settings'
+    | '/tv-appearances'
+    | '/whatsapp'
   fileRoutesById: FileRoutesById
 }
 
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  BeneficiariesRoute: typeof BeneficiariesRoute
+  ContractsRoute: typeof ContractsRoute
+  DataCenterRoute: typeof DataCenterRoute
+  EditorialRoute: typeof EditorialRoute
+  FinanceRoute: typeof FinanceRoute
+  ReconciliationRoute: typeof ReconciliationRoute
+  ReportsRoute: typeof ReportsRoute
+  SettingsRoute: typeof SettingsRoute
+  TvAppearancesRoute: typeof TvAppearancesRoute
+  WhatsappRoute: typeof WhatsappRoute
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  BeneficiariesRoute: BeneficiariesRoute,
+  ContractsRoute: ContractsRoute,
+  DataCenterRoute: DataCenterRoute,
+  EditorialRoute: EditorialRoute,
+  FinanceRoute: FinanceRoute,
+  ReconciliationRoute: ReconciliationRoute,
+  ReportsRoute: ReportsRoute,
+  SettingsRoute: SettingsRoute,
+  TvAppearancesRoute: TvAppearancesRoute,
+  WhatsappRoute: WhatsappRoute,
 }
 
 export const routeTree = rootRoute
@@ -77,11 +301,51 @@ export const routeTree = rootRoute
     "__root__": {
       "filePath": "__root.tsx",
       "children": [
-        "/"
+        "/",
+        "/beneficiaries",
+        "/contracts",
+        "/data-center",
+        "/editorial",
+        "/finance",
+        "/reconciliation",
+        "/reports",
+        "/settings",
+        "/tv-appearances",
+        "/whatsapp"
       ]
     },
     "/": {
       "filePath": "index.tsx"
+    },
+    "/beneficiaries": {
+      "filePath": "beneficiaries.tsx"
+    },
+    "/contracts": {
+      "filePath": "contracts.tsx"
+    },
+    "/data-center": {
+      "filePath": "data-center.tsx"
+    },
+    "/editorial": {
+      "filePath": "editorial.tsx"
+    },
+    "/finance": {
+      "filePath": "finance.tsx"
+    },
+    "/reconciliation": {
+      "filePath": "reconciliation.tsx"
+    },
+    "/reports": {
+      "filePath": "reports.tsx"
+    },
+    "/settings": {
+      "filePath": "settings.tsx"
+    },
+    "/tv-appearances": {
+      "filePath": "tv-appearances.tsx"
+    },
+    "/whatsapp": {
+      "filePath": "whatsapp.tsx"
     }
   }
 }
