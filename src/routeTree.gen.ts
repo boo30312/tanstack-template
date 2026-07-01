@@ -11,19 +11,26 @@
 // Import Routes
 
 import { Route as rootRoute } from './routes/__root'
+import { Route as WorkflowEngineImport } from './routes/workflow-engine'
 import { Route as WhatsappImport } from './routes/whatsapp'
 import { Route as TvAppearancesImport } from './routes/tv-appearances'
 import { Route as SettingsImport } from './routes/settings'
 import { Route as ReportsImport } from './routes/reports'
-import { Route as ReconciliationImport } from './routes/reconciliation'
 import { Route as FinanceImport } from './routes/finance'
 import { Route as EditorialImport } from './routes/editorial'
+import { Route as DocumentsImport } from './routes/documents'
 import { Route as DataCenterImport } from './routes/data-center'
 import { Route as ContractsImport } from './routes/contracts'
 import { Route as BeneficiariesImport } from './routes/beneficiaries'
 import { Route as IndexImport } from './routes/index'
 
 // Create/Update Routes
+
+const WorkflowEngineRoute = WorkflowEngineImport.update({
+  id: '/workflow-engine',
+  path: '/workflow-engine',
+  getParentRoute: () => rootRoute,
+} as any)
 
 const WhatsappRoute = WhatsappImport.update({
   id: '/whatsapp',
@@ -49,12 +56,6 @@ const ReportsRoute = ReportsImport.update({
   getParentRoute: () => rootRoute,
 } as any)
 
-const ReconciliationRoute = ReconciliationImport.update({
-  id: '/reconciliation',
-  path: '/reconciliation',
-  getParentRoute: () => rootRoute,
-} as any)
-
 const FinanceRoute = FinanceImport.update({
   id: '/finance',
   path: '/finance',
@@ -64,6 +65,12 @@ const FinanceRoute = FinanceImport.update({
 const EditorialRoute = EditorialImport.update({
   id: '/editorial',
   path: '/editorial',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const DocumentsRoute = DocumentsImport.update({
+  id: '/documents',
+  path: '/documents',
   getParentRoute: () => rootRoute,
 } as any)
 
@@ -123,6 +130,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof DataCenterImport
       parentRoute: typeof rootRoute
     }
+    '/documents': {
+      id: '/documents'
+      path: '/documents'
+      fullPath: '/documents'
+      preLoaderRoute: typeof DocumentsImport
+      parentRoute: typeof rootRoute
+    }
     '/editorial': {
       id: '/editorial'
       path: '/editorial'
@@ -135,13 +149,6 @@ declare module '@tanstack/react-router' {
       path: '/finance'
       fullPath: '/finance'
       preLoaderRoute: typeof FinanceImport
-      parentRoute: typeof rootRoute
-    }
-    '/reconciliation': {
-      id: '/reconciliation'
-      path: '/reconciliation'
-      fullPath: '/reconciliation'
-      preLoaderRoute: typeof ReconciliationImport
       parentRoute: typeof rootRoute
     }
     '/reports': {
@@ -172,6 +179,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof WhatsappImport
       parentRoute: typeof rootRoute
     }
+    '/workflow-engine': {
+      id: '/workflow-engine'
+      path: '/workflow-engine'
+      fullPath: '/workflow-engine'
+      preLoaderRoute: typeof WorkflowEngineImport
+      parentRoute: typeof rootRoute
+    }
   }
 }
 
@@ -182,13 +196,14 @@ export interface FileRoutesByFullPath {
   '/beneficiaries': typeof BeneficiariesRoute
   '/contracts': typeof ContractsRoute
   '/data-center': typeof DataCenterRoute
+  '/documents': typeof DocumentsRoute
   '/editorial': typeof EditorialRoute
   '/finance': typeof FinanceRoute
-  '/reconciliation': typeof ReconciliationRoute
   '/reports': typeof ReportsRoute
   '/settings': typeof SettingsRoute
   '/tv-appearances': typeof TvAppearancesRoute
   '/whatsapp': typeof WhatsappRoute
+  '/workflow-engine': typeof WorkflowEngineRoute
 }
 
 export interface FileRoutesByTo {
@@ -196,13 +211,14 @@ export interface FileRoutesByTo {
   '/beneficiaries': typeof BeneficiariesRoute
   '/contracts': typeof ContractsRoute
   '/data-center': typeof DataCenterRoute
+  '/documents': typeof DocumentsRoute
   '/editorial': typeof EditorialRoute
   '/finance': typeof FinanceRoute
-  '/reconciliation': typeof ReconciliationRoute
   '/reports': typeof ReportsRoute
   '/settings': typeof SettingsRoute
   '/tv-appearances': typeof TvAppearancesRoute
   '/whatsapp': typeof WhatsappRoute
+  '/workflow-engine': typeof WorkflowEngineRoute
 }
 
 export interface FileRoutesById {
@@ -211,13 +227,14 @@ export interface FileRoutesById {
   '/beneficiaries': typeof BeneficiariesRoute
   '/contracts': typeof ContractsRoute
   '/data-center': typeof DataCenterRoute
+  '/documents': typeof DocumentsRoute
   '/editorial': typeof EditorialRoute
   '/finance': typeof FinanceRoute
-  '/reconciliation': typeof ReconciliationRoute
   '/reports': typeof ReportsRoute
   '/settings': typeof SettingsRoute
   '/tv-appearances': typeof TvAppearancesRoute
   '/whatsapp': typeof WhatsappRoute
+  '/workflow-engine': typeof WorkflowEngineRoute
 }
 
 export interface FileRouteTypes {
@@ -227,39 +244,42 @@ export interface FileRouteTypes {
     | '/beneficiaries'
     | '/contracts'
     | '/data-center'
+    | '/documents'
     | '/editorial'
     | '/finance'
-    | '/reconciliation'
     | '/reports'
     | '/settings'
     | '/tv-appearances'
     | '/whatsapp'
+    | '/workflow-engine'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
     | '/beneficiaries'
     | '/contracts'
     | '/data-center'
+    | '/documents'
     | '/editorial'
     | '/finance'
-    | '/reconciliation'
     | '/reports'
     | '/settings'
     | '/tv-appearances'
     | '/whatsapp'
+    | '/workflow-engine'
   id:
     | '__root__'
     | '/'
     | '/beneficiaries'
     | '/contracts'
     | '/data-center'
+    | '/documents'
     | '/editorial'
     | '/finance'
-    | '/reconciliation'
     | '/reports'
     | '/settings'
     | '/tv-appearances'
     | '/whatsapp'
+    | '/workflow-engine'
   fileRoutesById: FileRoutesById
 }
 
@@ -268,13 +288,14 @@ export interface RootRouteChildren {
   BeneficiariesRoute: typeof BeneficiariesRoute
   ContractsRoute: typeof ContractsRoute
   DataCenterRoute: typeof DataCenterRoute
+  DocumentsRoute: typeof DocumentsRoute
   EditorialRoute: typeof EditorialRoute
   FinanceRoute: typeof FinanceRoute
-  ReconciliationRoute: typeof ReconciliationRoute
   ReportsRoute: typeof ReportsRoute
   SettingsRoute: typeof SettingsRoute
   TvAppearancesRoute: typeof TvAppearancesRoute
   WhatsappRoute: typeof WhatsappRoute
+  WorkflowEngineRoute: typeof WorkflowEngineRoute
 }
 
 const rootRouteChildren: RootRouteChildren = {
@@ -282,13 +303,14 @@ const rootRouteChildren: RootRouteChildren = {
   BeneficiariesRoute: BeneficiariesRoute,
   ContractsRoute: ContractsRoute,
   DataCenterRoute: DataCenterRoute,
+  DocumentsRoute: DocumentsRoute,
   EditorialRoute: EditorialRoute,
   FinanceRoute: FinanceRoute,
-  ReconciliationRoute: ReconciliationRoute,
   ReportsRoute: ReportsRoute,
   SettingsRoute: SettingsRoute,
   TvAppearancesRoute: TvAppearancesRoute,
   WhatsappRoute: WhatsappRoute,
+  WorkflowEngineRoute: WorkflowEngineRoute,
 }
 
 export const routeTree = rootRoute
@@ -305,13 +327,14 @@ export const routeTree = rootRoute
         "/beneficiaries",
         "/contracts",
         "/data-center",
+        "/documents",
         "/editorial",
         "/finance",
-        "/reconciliation",
         "/reports",
         "/settings",
         "/tv-appearances",
-        "/whatsapp"
+        "/whatsapp",
+        "/workflow-engine"
       ]
     },
     "/": {
@@ -326,14 +349,14 @@ export const routeTree = rootRoute
     "/data-center": {
       "filePath": "data-center.tsx"
     },
+    "/documents": {
+      "filePath": "documents.tsx"
+    },
     "/editorial": {
       "filePath": "editorial.tsx"
     },
     "/finance": {
       "filePath": "finance.tsx"
-    },
-    "/reconciliation": {
-      "filePath": "reconciliation.tsx"
     },
     "/reports": {
       "filePath": "reports.tsx"
@@ -346,6 +369,9 @@ export const routeTree = rootRoute
     },
     "/whatsapp": {
       "filePath": "whatsapp.tsx"
+    },
+    "/workflow-engine": {
+      "filePath": "workflow-engine.tsx"
     }
   }
 }
